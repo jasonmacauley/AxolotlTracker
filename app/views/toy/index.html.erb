@@ -5,4 +5,6 @@
 <%= @board %>
 
 <h1>Actions</h1>
-<%= @actions %>
+<% @sorted_actions.each do |action| %>
+  <h3>ID: <%= action.trello_card_id %> Type: <%= action.action_type %> Date: <%= action.datetime %> </h3>
+<% end %>

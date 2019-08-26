@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trello_id: MyString
+  datetime: 2019-08-26 14:50:33
+  type: 
+  change_type: MyString
+
+two:
+  trello_id: MyString
+  datetime: 2019-08-26 14:50:33
+  type: 
+  change_type: MyString

@@ -15,7 +15,7 @@ module Trello
     end
 
     def fetch_board_actions(board_id)
-      url = board_url(board_id) + '/actions?'
+      url = board_url(board_id) + '/actions?limit=1000&'
       do_get_request(url)
     end
 
