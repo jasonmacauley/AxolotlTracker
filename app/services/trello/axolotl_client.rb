@@ -8,5 +8,9 @@ module Trello
     def actions
       fetch_board_actions(AX_ID)
     end
+
+    def lists
+      fetch_board_lists(AX_ID)
+    end
   end
 end

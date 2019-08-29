@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trello_card_id: MyString
+  hours_in_list: 
+  trello_list_id: MyString
+
+two:
+  trello_card_id: MyString
+  hours_in_list: 
+  trello_list_id: MyString

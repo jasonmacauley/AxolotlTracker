@@ -19,6 +19,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_board_lists(board_id)
+      url = board_url(board_id) + '/lists?'
+      do_get_request(url)
+    end
+
     private
 
     def do_get_request(url)
