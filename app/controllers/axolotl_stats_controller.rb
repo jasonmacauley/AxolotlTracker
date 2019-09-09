@@ -6,16 +6,18 @@ class AxolotlStatsController < ApplicationController
 
     @cards.each do |card|
       i = 0
-      until card.trello_list_changes[i+1].nil?
-        time_in_list = card.trello_list_changes[i].datetime - card.trello_list_changes[i+1].datetime
-        puts time_in_list
-        if @lists[card.trello_list_changes[i+1].list_after_name].nil?
-          @lists[card.trello_list_changes[i+1].list_after_name] = {}
-          @lists[card.trello_list_changes[i+1].list_after_name]['total'] = 0
-          @lists[card.trello_list_changes[i+1].list_after_name]['count'] = 0
+      card.trello_list_changes.each do |change|
+
+        puts change.time_in_list
+        if @lists[change.list_after_name].nil?
+          @lists[change.list_after_name] = {}
+          @lists[change.list_after_name]['total'] = 0
+          @lists[change.list_after_name]['count'] = 0
         end
-        @lists[card.trello_list_changes[i+1].list_after_name]['total'] += time_in_list
-        @lists[card.trello_list_changes[i+1].list_after_name]['count'] += 1
+        next if change.time_in_list.nil?
+
+        @lists[change.list_after_name]['total'] += change.time_in_list
+        @lists[change.list_after_name]['count'] += 1
         i += 1
       end
     end

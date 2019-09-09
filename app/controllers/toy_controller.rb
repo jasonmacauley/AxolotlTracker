@@ -44,6 +44,14 @@ class ToyController < ApplicationController
         end
 
         trello_card.save
+
+        i = 0
+        until trello_card.trello_list_changes[i+1].nil?
+          time_in_list = trello_card.trello_list_changes[i].datetime - trello_card.trello_list_changes[i+1].datetime
+          trello_card.trello_list_changes[i+1].time_in_list = time_in_list
+          trello_card.trello_list_changes[i+1].save
+          i += 1
+        end
       end
     end
   end
