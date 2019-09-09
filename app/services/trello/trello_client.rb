@@ -19,8 +19,18 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_card_actions(card_id)
+      url = card_url(card_id) + '/actions?filter=all&'
+      do_get_request(url)
+    end
+
     def fetch_board_lists(board_id)
       url = board_url(board_id) + '/lists?'
+      do_get_request(url)
+    end
+
+    def fetch_list_cards(list_id)
+      url = list_url(list_id) + '/cards?'
       do_get_request(url)
     end
 
@@ -38,6 +48,14 @@ module Trello
 
     def board_url(id)
       BASE_URL + 'boards/' + id.to_s
+    end
+
+    def card_url(id)
+      BASE_URL + 'cards/' +id.to_s
+    end
+
+    def list_url(id)
+      BASE_URL + 'lists/' +id.to_s
     end
 
     def creds

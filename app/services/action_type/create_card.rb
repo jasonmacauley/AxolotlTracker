@@ -2,14 +2,16 @@ module ActionType
   class CreateCard
     def handle(action)
       puts 'CreateCard - ' + action['type']
-
-      act = Action.find_by_trello_id(action['id'])
-
-      puts 'Action Type: ' + action['type']
       return unless action['data'].key?('card')
 
+      act = TrelloAction.find_by(trello_id: action['id'])
+
+
+      puts 'Action Type: ' + action['type']
+
+
       if act.nil?
-        Action.create(
+        TrelloAction.create(
             trello_id: action['id'],
             datetime: action['date'],
             trello_card_id: action['data']['card']['id'],

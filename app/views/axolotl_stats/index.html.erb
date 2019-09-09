@@ -1,0 +1,13 @@
+<h1>AxolotlStats#index,</h1>
+<p>Find me in app/views/axolotl_stats/index,.html.erb</p>
+
+<% @lists.each do |list, values| %>
+  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+<% end %>
+
+<% @cards.each do |card| %>
+  <h3><%= card.name %></h3>
+  <% card.trello_list_changes.each do |change| %>
+    <li><%= change.datetime %> - <%= change.list_before_name %> ---> <%= change.list_after_name %></li>
+  <% end %>
+<% end %>

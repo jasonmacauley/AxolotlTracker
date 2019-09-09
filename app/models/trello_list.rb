@@ -1,0 +1,2 @@
+class TrelloList < ApplicationRecord
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190829150142) do
+ActiveRecord::Schema.define(version: 20190905192746) do
 
   create_table "actions", force: :cascade do |t|
     t.string "trello_id"
@@ -39,6 +39,42 @@ ActiveRecord::Schema.define(version: 20190829150142) do
     t.datetime "updated_at", null: false
     t.datetime "enter"
     t.datetime "exit"
+  end
+
+  create_table "trello_actions", force: :cascade do |t|
+    t.string "trello_id"
+    t.string "action_type"
+    t.string "update_type"
+    t.datetime "datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "trello_card_id"
+  end
+
+  create_table "trello_cards", force: :cascade do |t|
+    t.string "name"
+    t.string "trello_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trello_list_changes", force: :cascade do |t|
+    t.datetime "datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "trello_card_id"
+    t.string "list_before"
+    t.string "list_after"
+    t.string "trello_action_ref_id"
+    t.string "list_before_name"
+    t.string "list_after_name"
+  end
+
+  create_table "trello_lists", force: :cascade do |t|
+    t.string "trello_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
