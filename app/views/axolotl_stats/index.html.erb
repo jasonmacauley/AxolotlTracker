@@ -1,13 +1,23 @@
 <h1>AxolotlStats#index,</h1>
 <p>Find me in app/views/axolotl_stats/index,.html.erb</p>
-
+<h1>All Time</h1>
 <% @lists.each do |list, values| %>
   <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
 <% end %>
 
+<h1>Last 7 Days</h1>
+<% @recent_lists.each do |list, values| %>
+  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+<% end %>
+
+<h1>Previous Week</h1>
+<% @p_week.each do |list, values| %>
+  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+<% end %>
+
 <% @cards.each do |card| %>
-  <h3><%= card.name %> Points <%= card.points %></h3>
+  <h3><%= card.id %>  <%= card.name %> Points <%= card.points %> - Last Action: <%= card.last_action_datetime %></h3>
   <% card.trello_list_changes.each do |change| %>
-    <li><%= change.datetime %> - <%= change.list_before_name %> ---> <%= change.list_after_name %></li>
+    <li><%= change.datetime %> - <%= change.list_before_name %> ---> <%= change.list_after_name %> Elapsed Time: <%= change.time_in_list %></li>
   <% end %>
 <% end %>

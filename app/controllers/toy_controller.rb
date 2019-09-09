@@ -44,13 +44,15 @@ class ToyController < ApplicationController
         end
 
         capture = trello_card.name.match(/^\((\d+)\)/)
-        puts 'CAPTURE: ' + capture.to_s
 
         unless capture.nil?
           trello_card.points = capture[1]
         end
 
-        trello_card.save
+        unless trello_card.trello_list_changes[0].nil?
+          trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
+        end
+        puts card['dateLastActivity'].to_s
 
         i = 0
         until trello_card.trello_list_changes[i+1].nil?
@@ -59,6 +61,8 @@ class ToyController < ApplicationController
           trello_card.trello_list_changes[i+1].save
           i += 1
         end
+
+        trello_card.save
       end
     end
   end

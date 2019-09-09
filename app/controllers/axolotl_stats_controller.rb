@@ -1,26 +1,16 @@
 class AxolotlStatsController < ApplicationController
+  include AxolotlStatsHelper
   def index
-    @lists = {}
-
     @cards = TrelloCard.all
+    @lists = calc_average_time_in_lists(@cards)
+    #binding.pry
 
-    @cards.each do |card|
-      i = 0
-      card.trello_list_changes.each do |change|
+    five_days_cards = TrelloCard.last_action_between(7.days.ago, Time.now)
 
-        puts change.time_in_list
-        if @lists[change.list_after_name].nil?
-          @lists[change.list_after_name] = {}
-          @lists[change.list_after_name]['total'] = 0
-          @lists[change.list_after_name]['count'] = 0
-        end
-        next if change.time_in_list.nil?
+    @recent_lists = calc_average_time_in_lists(five_days_cards)
 
-        @lists[change.list_after_name]['total'] += change.time_in_list
-        @lists[change.list_after_name]['count'] += 1
-        i += 1
-      end
-    end
+    prior_week = TrelloCard.last_action_between(14.days.ago, 7.days.ago)
+    @p_week = calc_average_time_in_lists(prior_week)
   end
 
   def show

@@ -33,6 +33,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'rest-client'
 gem 'json'
 gem 'date'
+gem 'pry-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
