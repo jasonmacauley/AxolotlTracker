@@ -6,7 +6,7 @@
 <% end %>
 
 <% @cards.each do |card| %>
-  <h3><%= card.name %></h3>
+  <h3><%= card.name %> Points <%= card.points %></h3>
   <% card.trello_list_changes.each do |change| %>
     <li><%= change.datetime %> - <%= change.list_before_name %> ---> <%= change.list_after_name %></li>
   <% end %>

@@ -43,6 +43,13 @@ class ToyController < ApplicationController
           )
         end
 
+        capture = trello_card.name.match(/^\((\d+)\)/)
+        puts 'CAPTURE: ' + capture.to_s
+
+        unless capture.nil?
+          trello_card.points = capture[1]
+        end
+
         trello_card.save
 
         i = 0
