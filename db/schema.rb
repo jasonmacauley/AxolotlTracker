@@ -10,36 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190909185038) do
-
-  create_table "actions", force: :cascade do |t|
-    t.string "trello_id"
-    t.datetime "datetime"
-    t.string "type"
-    t.string "change_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "trello_card_id"
-    t.string "action_type"
-  end
-
-  create_table "cards", force: :cascade do |t|
-    t.string "trello_id"
-    t.string "name"
-    t.string "current_trello_list_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "list_times", force: :cascade do |t|
-    t.string "trello_card_id"
-    t.decimal "hours_in_list"
-    t.string "trello_list_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "enter"
-    t.datetime "exit"
-  end
+ActiveRecord::Schema.define(version: 20190910141713) do
 
   create_table "trello_actions", force: :cascade do |t|
     t.string "trello_id"
