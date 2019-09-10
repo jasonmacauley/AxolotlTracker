@@ -2,7 +2,7 @@ module AxolotlStatsHelper
   def calc_average_time_in_lists(cards)
     lists = {}
 
-    puts 'Calc Average for ' + cards.length.to_s + 'cards'
+    puts 'Calc Average for ' + cards.length.to_s + ' cards'
     cards.each do |card|
       card.trello_list_changes.each do |change|
         handle_nil(change, lists)

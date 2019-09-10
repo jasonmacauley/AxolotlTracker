@@ -15,6 +15,14 @@
   <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
 <% end %>
 
+<h1>Cards By Week</h1>
+<ol>
+  <% @cards_by_week.each do |cnt| %>
+    <li><%= cnt %></li>
+  <% end %>
+</ol>
+
+
 <% @cards.each do |card| %>
   <h3><%= card.id %>  <%= card.name %> Points <%= card.points %> - Last Action: <%= card.last_action_datetime %></h3>
   <% card.trello_list_changes.each do |change| %>

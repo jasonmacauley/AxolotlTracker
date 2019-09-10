@@ -4,18 +4,4 @@
 <h1>Board</h1>
 <%= @board %>
 
-<h1>Lists</h1>
-<% @lists.each do |list| %>
-  <%= list['id'] %> - <%= list['name'] %> Ave. Time: <%= @list_hash[list['id']]['average_time'] %><br>
-<% end %>
 
-<h1>List History</h1>
-<% @data['list_times'].each do |list_time| %>
-  (<%= list_time.trello_card_id %>) <%= @list_hash[list_time.trello_list_id].to_s %> - List: <%= list_time.trello_list_id %> <br> Enter <%= list_time.enter %> <br>Exit <%= list_time.exit %> <br>
-<% end %>
-
-<h1>Actions</h1>
-<% @data['sorted_actions'].each do |action| %>
-  <h3>ID: <%= action.trello_card_id %> Type: <%= action.action_type %> Date: <%= action.datetime %> </h3>
-  <%= action.change_type %>
-<% end %>
