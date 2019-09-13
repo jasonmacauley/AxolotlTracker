@@ -1,31 +1,45 @@
 class ToyController < ApplicationController
   include ToyHelper
+  BOARDS = ['5c114cf3d3b8e1120395a89a',
+            '5ac3b828260d6feb6cb0ff4c',
+            '5a67b76310cf303723d19928'].freeze
   def index
-    @board = Trello::AxolotlClient.new.board
-    @actions = Trello::AxolotlClient.new.actions
-    @lists = Trello::AxolotlClient.new.lists
+    BOARDS.each do |board_id|
+      t_board = Trello::TrelloClient.new.fetch_board(board_id)
 
-    @lists.each do |list|
+      TrelloBoard.create(trello_id: t_board['id'], name: t_board['name']) unless TrelloBoard.find_by(trello_id: board_id)
+
+      board = TrelloBoard.find_by(trello_id: board_id)
+
+      handle_lists(Trello::TrelloClient.new.fetch_board_lists(board_id), board)
+    end
+    @boards = Trello::TrelloClient.new.fetch_boards
+
+
+  end
+
+  private
+
+  def handle_lists(lists, board)
+    lists.each do |list|
       puts 'List: ' + list['name']
       next unless list['name'] =~ /Done/i
 
       puts 'FETCHING CARDS IN DONE!'
-      @list_cards = Trello::AxolotlClient.new.fetch_list_cards(list['id'])
-      @list_cards.each do |card|
+      list_cards = Trello::TrelloClient.new.fetch_list_cards(list['id'])
+      list_cards.each do |card|
         trello_card = store_card(card)
-
+        board.trello_cards.push(trello_card)
         import_actions(trello_card)
         card_last_action(trello_card)
       end
     end
   end
 
-  private
-
   def import_actions(trello_card)
-    @card_actions = Trello::AxolotlClient.new.fetch_card_actions(trello_card.trello_id)
+    card_actions = Trello::TrelloClient.new.fetch_card_actions(trello_card.trello_id)
 
-    @card_actions.each do |action|
+    card_actions.each do |action|
       store_action(trello_card, action)
       store_list_changes(trello_card, action)
     end
@@ -93,6 +107,7 @@ class ToyController < ApplicationController
   def card_last_action(trello_card)
     unless trello_card.trello_list_changes[0].nil?
       trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
+      trello_card.save
     end
   end
 end

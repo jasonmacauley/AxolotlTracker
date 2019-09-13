@@ -5,4 +5,7 @@ class TrelloCard < ApplicationRecord
   scope :last_action_between, lambda {|start_date, end_date|
     where('last_action_datetime >= ? AND last_action_datetime <= ?',
           start_date, end_date)}
+  scope :last_action_between_by_board, lambda {|start_date, end_date, board_id|
+    where('last_action_datetime >= ? AND last_action_datetime <= ? AND trello_board_id = ?',
+          start_date, end_date, board_id)}
 end

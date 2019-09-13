@@ -2,6 +2,8 @@
 <p>Find me in app/views/toy/index.html.erb</p>
 
 <h1>Board</h1>
-<%= @board %>
+<% @boards.each do |board| %>
+  <li><%= board['name'] %> - <%= board['id'] %></li>
+<% end %>
 
 
