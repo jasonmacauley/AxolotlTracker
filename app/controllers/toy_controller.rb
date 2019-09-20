@@ -2,7 +2,8 @@ class ToyController < ApplicationController
   include ToyHelper
   BOARDS = ['5c114cf3d3b8e1120395a89a',
             '5ac3b828260d6feb6cb0ff4c',
-            '5a67b76310cf303723d19928'].freeze
+            '5a67b76310cf303723d19928',
+            '5d78084056dc2f482f027656'].freeze
   def index
     BOARDS.each do |board_id|
       t_board = Trello::TrelloClient.new.fetch_board(board_id)
