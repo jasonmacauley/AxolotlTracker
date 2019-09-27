@@ -34,6 +34,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_card(card_id)
+      url = card_url(card_id) + '?'
+      do_get_request(url)
+    end
+
     private
 
     def do_get_request(url)

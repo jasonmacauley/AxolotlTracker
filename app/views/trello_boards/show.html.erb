@@ -17,9 +17,21 @@
 
 <h1>Cards By Week</h1>
 <table>
-  <tr><th align="center">Week Of</th><th align="center">Cards Completed</th><th align="center">Points</th></tr>
-  <% @cards_by_week.each do |date,count,points| %>
-    <tr><td align="center"><%= date.to_date %></td><td align="center"><%= count %></td><td align="center"><%= points %></td></tr>
+  <tr>
+    <th align="center">Week Of</th>
+    <th align="center">Cards Completed</th>
+    <th align="center">Points</th>
+    <th align="center">Spikes</th>
+    <th align="center">Airbrakes</th>
+  </tr>
+  <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
+    <tr>
+      <td align="center"><%= date.to_date %></td>
+      <td align="center"><%= count %></td>
+      <td align="center"><%= points %></td>
+      <td align="center"><%= spikes %></td>
+      <td align="center"><%= airbrakes %></td>
+    </tr>
   <% end %>
 </table>
 

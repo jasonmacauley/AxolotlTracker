@@ -33,6 +33,7 @@ class ToyController < ApplicationController
         board.trello_cards.push(trello_card)
         import_actions(trello_card)
         card_last_action(trello_card)
+        trello_card.save
       end
     end
   end
@@ -81,7 +82,7 @@ class ToyController < ApplicationController
       trello_card = TrelloCard.create(trello_id: card['id'], name: card['name'])
     end
     get_point_value(trello_card)
-
+    get_card_type(trello_card)
 
     trello_card
   end
@@ -92,6 +93,17 @@ class ToyController < ApplicationController
     unless capture.nil?
       trello_card.points = capture[1]
     end
+  end
+
+  def get_card_type(trello_card)
+    if trello_card.name.match(/spike/i)
+      trello_card.card_type = 'spike'
+    elsif trello_card.name.match(/airbrake/i)
+      trello_card.card_type = 'airbrake'
+    else
+      trello_card.card_type = 'product'
+    end
+    trello_card.save
   end
 
   def calc_card_time_in_list(trello_card)
@@ -106,7 +118,9 @@ class ToyController < ApplicationController
   end
 
   def card_last_action(trello_card)
-    unless trello_card.trello_list_changes[0].nil?
+    if trello_card.trello_list_changes[0].nil?
+      trello_card.last_action_datetime = trello_card.trello_actions[0].datetime
+    else
       trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
       trello_card.save
     end
