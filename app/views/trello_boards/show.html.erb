@@ -1,43 +1,49 @@
 <h1><%= @board.name %></h1>
 <%= link_to 'Back to Boards', trello_boards_path %>
-<h1>All Time</h1>
-<% @lists.each do |list, values| %>
-  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-<% end %>
-
-<h1>This Week</h1>
-<% @recent_lists.each do |list, values| %>
-  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-<% end %>
-
-<h1>Last Week</h1>
-<% @p_week.each do |list, values| %>
-  <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-<% end %>
-
-<h1>Cards By Week</h1>
 <table>
   <tr>
-    <th align="center">Week Of</th>
-    <th align="center">Cards Completed</th>
-    <th align="center">Points</th>
-    <th align="center">Spikes</th>
-    <th align="center">Airbrakes</th>
+    <th>Cards By Week</th>
+    <th>This Week</th>
+    <th>Last Week</th>
+    <th>All Time</th>
   </tr>
-  <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
-    <tr>
-      <td align="center"><%= date.to_date %></td>
-      <td align="center"><%= count %></td>
-      <td align="center"><%= points %></td>
-      <td align="center"><%= spikes %></td>
-      <td align="center"><%= airbrakes %></td>
-    </tr>
-  <% end %>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <th align="center">Week Of</th>
+          <th align="center">Cards Completed</th>
+          <th align="center">Points</th>
+          <th align="center">Spikes</th>
+          <th align="center">Airbrakes</th>
+        </tr>
+        <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
+          <tr>
+            <td align="center"><%= date.to_date %></td>
+            <td align="center"><%= link_to count, cards_path({board_id: @board.id, start_date: date}) %></td>
+            <td align="center"><%= points %></td>
+            <td align="center"><%= link_to spikes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'spike'}) %></td>
+            <td align="center"><%= link_to airbrakes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'airbrake'}) %></td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+    <td valign="top">
+      <% @recent_lists.each do |list, values| %>
+        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+      <% end %>
+    </td>
+    <td valign="top">
+      <% @p_week.each do |list, values| %>
+        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+      <% end %>
+    </td>
+    <td valign="top">
+      <% @lists.each do |list, values| %>
+        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
+      <% end %>
+    </td>
+  </tr>
 </table>
 
-<% @cards.each do |card| %>
-  <h3><%= card.id %>  <%= card.name %> Points <%= card.points %> - Last Action: <%= card.last_action_datetime %></h3>
-  <% card.trello_list_changes.each do |change| %>
-    <li><%= change.datetime %> - <%= change.list_before_name %> ---> <%= change.list_after_name %> Elapsed Time: <%= (change.time_in_list / 3600).round(2) unless change.time_in_list.nil? %></li>
-  <% end %>
-<% end %>
+

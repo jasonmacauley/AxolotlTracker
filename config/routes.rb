@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
   get '/trello_boards' => 'trello_boards#index'
   get '/trello_boards/:id' => 'trello_boards#show', as: :trello_board
+  get '/cards/:board_id/:start_date/:card_type' => 'cards#show', as: :cards_by_type
+  get '/cards/:board_id/:start_date' => 'cards#show', as: :cards
+
 
   get 'axolotl_stats/index'
 

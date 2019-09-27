@@ -20,7 +20,7 @@ class TrelloBoardsController < ApplicationController
     @p_week = calc_average_time_in_lists(prior_week)
 
     @cards_by_week = []
-    crunch_week_cards(monday, Time.now)
+    crunch_week_cards(monday, Date.today)
     wks = 0
     while wks < 20
       c_monday = monday - wks.weeks
