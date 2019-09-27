@@ -79,8 +79,11 @@ class ToyController < ApplicationController
 
     if trello_card.nil?
       puts 'Creating New Card'
-      trello_card = TrelloCard.create(trello_id: card['id'], name: card['name'])
+      trello_card = TrelloCard.create(
+          trello_id: card['id'],
+          name: card['name'])
     end
+    trello_card.trello_link = card['url']
     get_point_value(trello_card)
     get_card_type(trello_card)
 

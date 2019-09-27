@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190925182449) do
+ActiveRecord::Schema.define(version: 20190927165244) do
 
   create_table "trello_actions", force: :cascade do |t|
     t.string "trello_id"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20190925182449) do
     t.string "board_name"
     t.integer "trello_board_id"
     t.string "card_type"
+    t.string "trello_link"
   end
 
   create_table "trello_list_changes", force: :cascade do |t|

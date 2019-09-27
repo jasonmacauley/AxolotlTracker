@@ -1,5 +1,12 @@
-<h1><%= @board.name %></h1>
 <%= link_to 'Back to Boards', trello_boards_path %>
+<h1><%= @board.name %></h1>
+5 Week Trailing Averages:
+<li>
+  Cards: <%= @averages[0] %>
+</li>
+<li>
+  Points: <%= @averages[1] %>
+</li>
 <table>
   <tr>
     <th>Cards By Week</th>
@@ -45,5 +52,11 @@
     </td>
   </tr>
 </table>
+<%= line_chart [
+    {name: 'Cards', data: @chart_data['cards']},
+    {name: 'Points', data: @chart_data['points']},
+    {name: 'Spikes', data: @chart_data['spikes']},
+    {name: 'Airbrakes', data: @chart_data['airbrakes']}
+               ] %>
 
 

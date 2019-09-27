@@ -34,6 +34,7 @@ gem 'rest-client'
 gem 'json'
 gem 'date'
 gem 'pry-rails'
+gem 'chartkick'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

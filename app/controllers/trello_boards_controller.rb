@@ -28,9 +28,23 @@ class TrelloBoardsController < ApplicationController
       crunch_week_cards(c_monday - 1.week, c_monday - 1.day)
       wks += 1
     end
+    @averages = get_trailing_average(@cards_by_week)
+    @chart_data = build_chart_data(@cards_by_week)
   end
 
   private
+
+  def get_trailing_average(cards_by_week)
+    i = 0
+    cards = 0
+    points = 0
+    while i < 5
+      cards += cards_by_week[i][1]
+      points += cards_by_week[i][2]
+      i += 1
+    end
+    [cards / 5, points / 5]
+  end
 
   def get_monday
     d = Date.today
@@ -58,6 +72,22 @@ class TrelloBoardsController < ApplicationController
       p_count += card.points if card.points
     end
     @cards_by_week.push([begin_date, c_count, p_count, spikes, airbrakes])
+  end
+
+  def build_chart_data(cards_by_week)
+    chart_data = {
+        'cards' => {},
+        'points' => {},
+        'spikes' => {},
+        'airbrakes' => {}
+    }
+    cards_by_week.each do |date, cards, points, spikes, airbrakes|
+      chart_data['cards'][date] = cards
+      chart_data['points'][date] = points
+      chart_data['spikes'][date] = spikes
+      chart_data['airbrakes'][date] = airbrakes
+    end
+    return chart_data
   end
 
   def trello_board_params

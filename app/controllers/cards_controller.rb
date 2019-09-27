@@ -1,6 +1,7 @@
 class CardsController < ApplicationController
   def show
     @cards = get_cards
+    @board = TrelloBoard.find(params[:board_id])
   end
 
   private
