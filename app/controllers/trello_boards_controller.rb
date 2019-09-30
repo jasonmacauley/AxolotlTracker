@@ -35,10 +35,10 @@ class TrelloBoardsController < ApplicationController
   private
 
   def get_trailing_average(cards_by_week)
-    i = 0
+    i = 1
     cards = 0
     points = 0
-    while i < 5
+    while i < 6
       cards += cards_by_week[i][1]
       points += cards_by_week[i][2]
       i += 1
