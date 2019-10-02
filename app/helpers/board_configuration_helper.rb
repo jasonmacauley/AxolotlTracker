@@ -1,0 +1,2 @@
+module BoardConfigurationHelper
+end

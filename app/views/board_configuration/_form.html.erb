@@ -1,0 +1,14 @@
+<%= form_with do |f| %>
+  <% if board.errors.any? %>
+    <ul>
+      <% board.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= f.label :name %>
+  <%= text_field(f, :name, :value => @board.name) %>
+  <%= f.label :trello_id %>
+  <%= text_field(f, :trello_id, :value => @board.trello_id) %>
+  <%= f.submit %>
+<% end %>

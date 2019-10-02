@@ -1,22 +1,12 @@
 class ToyController < ApplicationController
   include ToyHelper
-  BOARDS = ['5c114cf3d3b8e1120395a89a',
-            '5ac3b828260d6feb6cb0ff4c',
-            '5a67b76310cf303723d19928',
-            '5d78084056dc2f482f027656'].freeze
   def index
-    BOARDS.each do |board_id|
-      t_board = Trello::TrelloClient.new.fetch_board(board_id)
-
-      TrelloBoard.create(trello_id: t_board['id'], name: t_board['name']) unless TrelloBoard.find_by(trello_id: board_id)
-
-      board = TrelloBoard.find_by(trello_id: board_id)
-
-      handle_lists(Trello::TrelloClient.new.fetch_board_lists(board_id), board)
+    @t_boards = TrelloBoard.all
+    @t_boards.each do |board|
+      Trello::DataLoader.new.load_board_data(board)
+#      handle_lists(Trello::TrelloClient.new.fetch_board_lists(board.trello_id), board)
     end
     @boards = Trello::TrelloClient.new.fetch_boards
-
-
   end
 
   private

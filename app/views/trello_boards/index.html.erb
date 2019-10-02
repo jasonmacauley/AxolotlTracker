@@ -1,6 +1,10 @@
 <h1>SB US Product Team Throughput Stats</h1>
 
 <% @boards.each do |board| %>
-  <%= link_to board.name, trello_board_path(board)  %><br>
+  <%= link_to board.name, trello_board_path(board)  %> <br>Last Refresh: <%= board.last_refresh %><br>
 <% end %>
+
+<br><br>
+
+<%= link_to('Add Boards', board_configuration_index_path) %> <%= link_to('Refresh Data For All Boards', refresh_all_path) %>
 

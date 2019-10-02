@@ -1,0 +1,13 @@
+<h1>Available Boards</h1>
+
+<% @boards.each do |board| %>
+  <b><%= board['name'] %></b>
+  <% if TrelloBoard.find_by_trello_id(board['id']) %>
+    <%= link_to('Configure', board_configuration_edit_path(id: TrelloBoard.find_by_trello_id(board['id']))) %>
+  <% else %>
+    <%= link_to('Activate Tracking', activate_board_path(trello_id: board['id'])) %>
+  <% end %>
+  <br>
+  Trello ID: <a href="<%= board['url'] %>"><%= board['id'] %></a>
+  <br><br>
+<% end %>
