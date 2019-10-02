@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191002172350) do
+ActiveRecord::Schema.define(version: 20191002175613) do
 
   create_table "trello_actions", force: :cascade do |t|
     t.string "trello_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20191002172350) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_refresh"
+    t.string "done_list_id"
   end
 
   create_table "trello_cards", force: :cascade do |t|

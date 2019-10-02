@@ -2,3 +2,10 @@
 
 <h1>BoardConfiguration#edit</h1>
 <p>Find me in app/views/board_configuration/edit.html.erb</p>
+
+<%= form_with(url: board_configuration_update_url(id: @board.id), method: "post") do |w| %>
+  <% @lists.each do |list| %>
+      <%= w.radio_button :done_list_id, list['id'], :checked => list['id'].match?(@board.done_list_id.to_s) ? true : false %> <%= list['name'] %> <br>
+  <% end %>
+  <%= w.submit %>
+<% end %>

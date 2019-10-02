@@ -1,5 +1,6 @@
 <%= link_to 'Back to Boards', trello_boards_path %> <br>
 Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh Data', refresh_path(@board) %>
+<%= link_to('Configure', board_configuration_edit_path(id: @board)) %>
 <h1><%= @board.name %></h1>
 5 Week Trailing Averages:
 <li>

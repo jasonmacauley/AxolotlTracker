@@ -1,25 +1,19 @@
 module Trello
   class DataLoader
     def load_board_data(board)
-      handle_lists(Trello::TrelloClient.new.fetch_board_lists(board.trello_id), board)
+      handle_lists(board)
     end
 
     private
 
-    def handle_lists(lists, board)
-      lists.each do |list|
-        puts 'List: ' + list['name']
-        next unless list['name'] =~ /Done/i
-
-        puts 'FETCHING CARDS IN DONE!'
-        list_cards = Trello::TrelloClient.new.fetch_list_cards(list['id'])
-        list_cards.each do |card|
-          trello_card = store_card(card)
-          board.trello_cards.push(trello_card)
-          import_actions(trello_card)
-          card_last_action(trello_card)
-          trello_card.save
-        end
+    def handle_lists(board)
+      list_cards = Trello::TrelloClient.new.fetch_list_cards(board.done_list_id)
+      list_cards.each do |card|
+        trello_card = store_card(card)
+        board.trello_cards.push(trello_card)
+        import_actions(trello_card)
+        card_last_action(trello_card)
+        trello_card.save
       end
     end
 
