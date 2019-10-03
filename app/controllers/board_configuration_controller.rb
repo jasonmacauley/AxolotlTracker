@@ -26,14 +26,30 @@ class BoardConfigurationController < ApplicationController
 
   def update
     @board = TrelloBoard.find(params[:id])
-    @board.done_list_id = params[:done_list_id]
-    @board.save
+    save_config(@board, 'done_list_id', params[:done_list_id])
+    save_config(@board, 'review_list_id', params[:review_list_id])
+
     redirect_to action: :edit, id: @board
   end
 
   private
 
+  def save_config(board, config_type, value)
+    board.board_configurations.each do |config|
+      if config.config_type.match?(config_type)
+        config.value = value
+      end
+    end
+    unless BoardConfiguration.config_by_board_type(@board.id, config_type).count > 0
+      config = BoardConfiguration.new('config_type' => config_type,
+                                      'value' => value)
+      config.save
+      @board.board_configurations.push(config)
+    end
+    @board.save
+  end
+
   def board_configuration_params
-    params.require(:board_configuration_params).require(:trello_id, :id, :name, :done_list_id, :board_id)
+    params.require(:board_configuration_params).require(:trello_id, :id, :name, :done_list_id, :board_id, :review_list_id)
   end
 end

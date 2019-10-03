@@ -7,7 +7,8 @@ module Trello
     private
 
     def handle_lists(board)
-      list_cards = Trello::TrelloClient.new.fetch_list_cards(board.done_list_id)
+      done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')
+      list_cards = Trello::TrelloClient.new.fetch_list_cards(done_config[0].value)
       list_cards.each do |card|
         trello_card = store_card(card)
         board.trello_cards.push(trello_card)
