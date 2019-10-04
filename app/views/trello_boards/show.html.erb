@@ -2,7 +2,7 @@
 Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@board) %><br>
 <%= link_to('Configure', board_configuration_edit_path(id: @board)) %>
 <h1><%= @board.name %></h1>
-5 Week Trailing Averages:
+<%= @trailing_average_period %> Week Trailing Averages:
 <li>
   Cards: <%= @averages[0] %>
 </li>

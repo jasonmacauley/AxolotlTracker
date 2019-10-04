@@ -19,6 +19,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_board_labels(board_id)
+      url = board_url(board_id) + '/labels?'
+      do_get_request(url)
+    end
+
     def fetch_card_actions(card_id)
       url = card_url(card_id) + '/actions?filter=all&'
       do_get_request(url)

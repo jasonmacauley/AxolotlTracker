@@ -30,20 +30,27 @@ class TrelloBoardsController < ApplicationController
     end
     @averages = get_trailing_average(@cards_by_week)
     @chart_data = build_chart_data(@cards_by_week)
+    @trailing_average_period = get_trailing_average_period
   end
 
   private
 
   def get_trailing_average(cards_by_week)
+    period = get_trailing_average_period
     i = 1
     cards = 0
     points = 0
-    while i < 6
+    while i < period + 1
       cards += cards_by_week[i][1]
       points += cards_by_week[i][2]
       i += 1
     end
-    [cards / 5, points / 5]
+    [cards / period, points / period]
+  end
+
+  def get_trailing_average_period
+    configs = BoardConfiguration.config_by_board_type(@board.id, 'trailing_average_period')
+    configs.count > 0 ? configs[0].value.to_i : 5
   end
 
   def get_monday
