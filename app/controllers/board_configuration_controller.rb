@@ -33,6 +33,8 @@ class BoardConfigurationController < ApplicationController
     save_config(@board, 'review_list_id', params[:review_list_id])
     save_config(@board, 'trailing_average_period', params[:trailing_average_period])
     save_checkbox_config(@board, 'cycle_time_lists', params[:cycle_time_lists])
+    save_checkbox_config(@board, 'display_average_lists', params[:display_average_lists])
+    save_checkbox_config(@board, "filtered_labels", params[:filtered_labels])
 
     redirect_to action: :edit, id: @board
   end
@@ -55,30 +57,34 @@ class BoardConfigurationController < ApplicationController
     board.save
   end
 
-  def save_checkbox_config(board, config_type, labels)
+  def save_checkbox_config(board, config_type, values)
     current = BoardConfiguration.config_by_board_type(board.id,config_type)
     c_labels = {}
     current.each do |c_label|
       c_labels[c_label.value] = c_label
     end
 
-    labels.each do |l|
-      c_labels.delete(l) if c_labels[l]
+    if values
+      values.each do |v|
+        c_labels.delete(v) if c_labels[v]
+      end
     end
 
     c_labels.each do |k,v|
       board.board_configurations.delete(v)
     end
 
-    puts 'VALUES ' + labels.to_s
-    labels.each do |value|
-      unless BoardConfiguration.config_by_board_type_value(board.id, config_type, value).count > 0
-        config = BoardConfiguration.new('config_type' => config_type,
-                                        'value' => value)
-        config.save
-        board.board_configurations.push(config)
+    if values
+      values.each do |value|
+        unless BoardConfiguration.config_by_board_type_value(board.id, config_type, value).count > 0
+          config = BoardConfiguration.new('config_type' => config_type,
+                                          'value' => value)
+          config.save
+          board.board_configurations.push(config)
+        end
       end
     end
+
     board.save
   end
 
@@ -91,6 +97,7 @@ class BoardConfigurationController < ApplicationController
                                                         :review_list_id,
                                                         :filtered_labels,
                                                         :cycle_time_lists,
-                                                        :trailing_average_period)
+                                                        :trailing_average_period,
+                                                        :display_average_lists)
   end
 end

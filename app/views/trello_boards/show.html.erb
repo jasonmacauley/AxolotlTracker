@@ -12,9 +12,7 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
 <table>
   <tr>
     <th>Cards By Week</th>
-    <th>This Week</th>
-    <th>Last Week</th>
-    <th>All Time</th>
+    <th>Average Days In Lists</th>
   </tr>
   <tr>
     <td>
@@ -38,27 +36,32 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
       </table>
     </td>
     <td valign="top">
-      <% @recent_lists.each do |list, values| %>
-        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-      <% end %>
-    </td>
-    <td valign="top">
-      <% @p_week.each do |list, values| %>
-        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-      <% end %>
-    </td>
-    <td valign="top">
-      <% @lists.each do |list, values| %>
-        <li><%= list %> --> <%= (((values['total']/values['count'])/3600)/24).round(2) %> Days</li>
-      <% end %>
+      <table>
+        <tr>
+          <th>Cycle Time</th>
+          <% @list_average_data['lists'].each do |list| %>
+            <th><%= list %></th>
+          <% end %>
+        </tr>
+        <% @list_average_data.each do |date, data| %>
+        <tr>
+          <td><%= @cycle_time[date] %></td>
+          <% @list_average_data['lists'].each do |list| %>
+            <% next if date.to_s.match?(/lists/) %>
+            <td align="center">
+              <%= @list_average_data[date][list]['average'] %>
+            </td>
+          <% end %>
+        </tr>
+        <% end %>
+
+      </table>
     </td>
   </tr>
 </table>
-<%= line_chart [
-    {name: 'Cards', data: @chart_data['cards']},
-    {name: 'Points', data: @chart_data['points']},
-    {name: 'Spikes', data: @chart_data['spikes']},
-    {name: 'Airbrakes', data: @chart_data['airbrakes']}
-               ] %>
+<h2 align="center">Throughput</h2>
+<%= line_chart @chart_data['throughput'] %>
+<h2 align="center">Time In List</h2>
+<%= line_chart @avg_graph %>
 
 

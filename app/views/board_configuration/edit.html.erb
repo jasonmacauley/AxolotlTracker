@@ -18,13 +18,15 @@
       <% end %>
     </div>
     <div>
-      <b>Define "Review Column"</b><br>
+      <b>Select Columns to Display Weekly Averages</b><br>
       <% @lists.each do |list| %>
-        <%= w.radio_button :review_list_id, list['id'],
-                           :checked => BoardConfiguration.config_by_board_type_value(@board.id,
-                                                                                     'review_list_id',
-                                                                                     list['id']).count > 0 ? true : false %> <%= list['name'] %> <br>
-      <% end %>
+        <%= w.check_box :display_average_lists,
+                        { multiple: true,
+                          checked: BoardConfiguration.config_by_board_type_value(@board.id,
+                                                                                 'display_average_lists',
+                                                                                 list['id']).count > 0 ? true : false
+                        }, list['id'], false %><%= list['name'] %><br>
+        <% end %>
     </div>
     <div>
       <b>Cycle Time Lists</b><br>

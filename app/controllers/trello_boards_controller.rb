@@ -6,37 +6,88 @@ class TrelloBoardsController < ApplicationController
 
   def show
     @board = TrelloBoard.find(params[:id])
-    puts 'Board ID: ' + @board.id.to_s
     @cards = @board.trello_cards
     @lists = calc_average_time_in_lists(@cards)
-    #binding.pry
-    monday = get_monday
-    five_days_cards = TrelloCard.last_action_between_by_board(monday - 1.week, monday, @board.id)
-
-    @recent_lists = calc_average_time_in_lists(five_days_cards)
-
-    prior_week = TrelloCard.last_action_between_by_board(monday - 2.weeks, monday - 1.weeks, @board.id)
-
-    @p_week = calc_average_time_in_lists(prior_week)
 
     @cards_by_week = []
-    crunch_week_cards(monday, Date.today)
-    wks = 0
-    while wks < 20
-      c_monday = monday - wks.weeks
-      puts (c_monday - 1.weeks).to_s + ' -> ' + (c_monday- 1.day).to_s
-      crunch_week_cards(c_monday - 1.week, c_monday - 1.day)
-      wks += 1
-    end
+    averages_by_week = historical_card_data
     @averages = get_trailing_average(@cards_by_week)
-    @chart_data = build_chart_data(@cards_by_week)
-    @trailing_average_period = get_trailing_average_period
+    @chart_data = build_throughput_chart_data(@cards_by_week)
+    @trailing_average_period = trailing_average_period
+    @list_average_data = build_list_average_display(averages_by_week)
+    @avg_graph = time_in_list_graph_data(@list_average_data)
+    @cycle_time = Calculators::CycleTime.new(@board).historical_cycle_time(averages_by_week)
+    puts 'AVG: ' + @avg_graph.to_s
+    puts 'Cycle Time: ' + @cycle_time.to_s
+    @avg_graph.push({name: 'cycle_time', data: @cycle_time})
   end
 
   private
 
+  def historical_card_data
+    monday = get_monday
+    averages_by_week = {}
+    crunch_week_cards(monday, Date.today)
+    calculator = Calculators::TimeInList.new(@board)
+    averages_by_week[monday] = calculator.calc_average_time_in_lists_for_period(monday, Date.today)
+    wks = 0
+    while wks < 20
+      c_monday = monday - wks.weeks
+      puts (c_monday - 1.weeks).to_s + ' -> ' + (c_monday - 1.day).to_s
+      crunch_week_cards(c_monday - 1.week, c_monday - 1.day)
+      averages_by_week[c_monday - 1.week] = calculator.calc_average_time_in_lists_for_period(c_monday - 1.week, c_monday - 1.day)
+      wks += 1
+    end
+    averages_by_week
+  end
+
+  def time_in_list_graph_data(avg_time_data)
+    avg_data = {}
+    avg_time_data.each do |date, data|
+      display_lists.each do |list|
+        next if date.to_s.match?(/lists/)
+        avg_data[list] = {} unless avg_data[list]
+        avg_data[list]['data'] = {} unless avg_data[list]['data']
+        avg_data[list]['name'] = list unless avg_data[list]['name']
+        avg_data[list]['data'][date] = data[list]['average']
+      end
+    end
+    avg_graph = []
+    avg_data.each do |key, data|
+      avg_graph.push(data)
+    end
+    return avg_graph
+  end
+
+  def display_lists
+    display_list_config = BoardConfiguration.config_by_board_type(@board.id, 'display_average_lists')
+    list = []
+    return list unless display_list_config.count > 0
+    display_list_config.each do |config|
+      list.push(TrelloList.find_by_trello_id(config.value).name)
+    end
+    return list
+  end
+
+  def build_list_average_display(averages_by_week)
+    data = {}
+    data['lists'] = display_lists
+
+    averages_by_week.each do |date, averages|
+      data[date] = {}
+      data['lists'].each do |list|
+        puts 'LIST: ' + list
+        data[date][list] = {}
+        #binding.pry
+        data[date][list]['average'] = averages[list] ? averages[list]['average'] : 0
+      end
+    end
+
+    return data
+  end
+
   def get_trailing_average(cards_by_week)
-    period = get_trailing_average_period
+    period = trailing_average_period
     i = 1
     cards = 0
     points = 0
@@ -48,7 +99,7 @@ class TrelloBoardsController < ApplicationController
     [cards / period, points / period]
   end
 
-  def get_trailing_average_period
+  def trailing_average_period
     configs = BoardConfiguration.config_by_board_type(@board.id, 'trailing_average_period')
     configs.count > 0 ? configs[0].value.to_i : 5
   end
@@ -81,19 +132,25 @@ class TrelloBoardsController < ApplicationController
     @cards_by_week.push([begin_date, c_count, p_count, spikes, airbrakes])
   end
 
-  def build_chart_data(cards_by_week)
-    chart_data = {
-        'cards' => {},
-        'points' => {},
-        'spikes' => {},
-        'airbrakes' => {}
-    }
+  def build_throughput_chart_data(cards_by_week)
+    cards_s = {}
+    points_s = {}
+    spikes_s = {}
+    airbrakes_s = {}
+
     cards_by_week.each do |date, cards, points, spikes, airbrakes|
-      chart_data['cards'][date] = cards
-      chart_data['points'][date] = points
-      chart_data['spikes'][date] = spikes
-      chart_data['airbrakes'][date] = airbrakes
+      cards_s[date] = cards
+      points_s[date] = points
+      spikes_s[date] = spikes
+      airbrakes_s[date] = airbrakes
     end
+    chart_data = {}
+    chart_data['throughput'] = [
+        { name: 'cards', data: cards_s },
+        { name: 'points', data: points_s },
+        { name: 'spikes', data: spikes_s },
+        { name: 'airbrakes', data: airbrakes_s }
+    ]
     return chart_data
   end
 

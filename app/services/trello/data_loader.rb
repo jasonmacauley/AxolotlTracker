@@ -1,6 +1,7 @@
 module Trello
   class DataLoader
     def load_board_data(board)
+      import_board_lists(board)
       handle_lists(board)
     end
 
@@ -16,6 +17,14 @@ module Trello
         card_last_action(trello_card)
         trello_card.save
       end
+    end
+
+    def import_board_lists(board)
+      lists = Trello::TrelloClient.new.fetch_board_lists(board.trello_id)
+      lists.each do |list|
+        board.trello_lists.push(TrelloList.create(name: list['name'], trello_id: list['id'])) unless TrelloList.find_by_trello_id(list['id'])
+      end
+      board.save
     end
 
     def import_actions(trello_card)
