@@ -1,0 +1,6 @@
+<h1>TrelloCredentials</h1>
+Credentials for <%= @user.email %><br>
+Trello Key: <%= @trello_credential.trello_key %><br>
+Trello Token: <%= @trello_credential.trello_token %><br>
+<%= link_to 'Edit', edit_trello_credentials_path(@trello_credential) %><br>
+<%= link_to 'Show Boards', trello_boards_path %>

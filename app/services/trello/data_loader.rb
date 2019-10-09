@@ -1,5 +1,9 @@
 module Trello
   class DataLoader
+    def initialize(trello_key, trello_token)
+      @trello_client = Trello::TrelloClient.new(trello_key, trello_token)
+    end
+
     def load_board_data(board)
       import_board_lists(board)
       handle_lists(board)
@@ -9,7 +13,7 @@ module Trello
 
     def handle_lists(board)
       done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')
-      list_cards = Trello::TrelloClient.new.fetch_list_cards(done_config[0].value)
+      list_cards = @trello_client.fetch_list_cards(done_config[0].value)
       list_cards.each do |card|
         trello_card = store_card(card)
         board.trello_cards.push(trello_card)
@@ -20,7 +24,7 @@ module Trello
     end
 
     def import_board_lists(board)
-      lists = Trello::TrelloClient.new.fetch_board_lists(board.trello_id)
+      lists = @trello_client.fetch_board_lists(board.trello_id)
       lists.each do |list|
         board.trello_lists.push(TrelloList.create(name: list['name'], trello_id: list['id'])) unless TrelloList.find_by_trello_id(list['id'])
       end
@@ -28,7 +32,7 @@ module Trello
     end
 
     def import_actions(trello_card)
-      card_actions = Trello::TrelloClient.new.fetch_card_actions(trello_card.trello_id)
+      card_actions = @trello_client.fetch_card_actions(trello_card.trello_id)
 
       card_actions.each do |action|
         store_action(trello_card, action)
@@ -110,12 +114,9 @@ module Trello
     end
 
     def card_last_action(trello_card)
-      if trello_card.trello_list_changes[0].nil?
-        trello_card.last_action_datetime = trello_card.trello_actions[0].datetime
-      else
-        trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
-        trello_card.save
-      end
+      return if trello_card.trello_list_changes[0].nil?
+      trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
+      trello_card.save
     end
   end
 end

@@ -1,8 +1,12 @@
 module Trello
   class TrelloClient
-    TOKEN = '72c97d8476276c7e9758f617b5a01bcb9184d0b966b2d5757013253ced6dfbd1'.freeze
-    KEY = 'cc752e29f0aa19eff1fb21e07eba0365'.freeze
     BASE_URL = 'https://api.trello.com/1/'.freeze
+
+    def initialize(trello_key, trello_token)
+      @key = trello_key
+      @token = trello_token
+    end
+
 
     def fetch_boards
       url = BASE_URL + 'members/me/boards?'
@@ -69,7 +73,7 @@ module Trello
     end
 
     def creds
-      'key=' + KEY + '&token=' + TOKEN
+      'key=' + @key + '&token=' + @token
     end
   end
 end

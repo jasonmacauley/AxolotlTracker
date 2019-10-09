@@ -1,4 +1,5 @@
 class TrelloBoardsController < ApplicationController
+  before_action :authenticate_user!
   include TrelloBoardsHelper
   def index
     @boards = TrelloBoard.all

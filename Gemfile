@@ -35,6 +35,7 @@ gem 'json'
 gem 'date'
 gem 'pry-rails'
 gem 'chartkick'
+gem 'devise'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

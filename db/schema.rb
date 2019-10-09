@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191004185854) do
+ActiveRecord::Schema.define(version: 20191009123525) do
 
   create_table "board_configurations", force: :cascade do |t|
     t.string "config_type"
@@ -53,6 +53,14 @@ ActiveRecord::Schema.define(version: 20191004185854) do
     t.string "trello_link"
   end
 
+  create_table "trello_credentials", force: :cascade do |t|
+    t.string "trello_key"
+    t.string "trello_token"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "trello_list_changes", force: :cascade do |t|
     t.datetime "datetime"
     t.datetime "created_at", null: false
@@ -72,6 +80,25 @@ ActiveRecord::Schema.define(version: 20191004185854) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "trello_board_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "trello_token"
+    t.string "trello_key"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

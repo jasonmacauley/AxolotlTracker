@@ -1,4 +1,5 @@
 class CardsController < ApplicationController
+  before_action :authenticate_user!
   def show
     @cards = get_cards
     @board = TrelloBoard.find(params[:board_id])

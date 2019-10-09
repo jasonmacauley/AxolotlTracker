@@ -1,0 +1,5 @@
+<%= form_for @trello_credential, url: trello_credentials_path do |f| %>
+  Trello Key: <%= f.text_field :trello_key %> <br>
+  Trello Token: <%= f.text_field :trello_token %> <br>
+  <%= f.submit %>
+<% end %>

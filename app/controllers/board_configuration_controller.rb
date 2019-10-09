@@ -1,4 +1,5 @@
 class BoardConfigurationController < ApplicationController
+  before_action :authenticate_user!
   def new
     @board = TrelloBoard.new
     trello_id = params[:trello_id]

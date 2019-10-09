@@ -1,4 +1,5 @@
 class RefreshController < ApplicationController
+  before_action :authenticate_user!
   def refresh
     @board = TrelloBoard.find(params[:id])
     refresh_board(@board) if @board
@@ -14,7 +15,8 @@ class RefreshController < ApplicationController
   private
 
   def refresh_board(board)
-    Trello::DataLoader.new.load_board_data(board)
+    Trello::DataLoader.new(current_user.trello_credential.trello_key,
+                           current_user.trello_credential.trello_token).load_board_data(board)
     board.last_refresh = Time.now
     board.save
   end

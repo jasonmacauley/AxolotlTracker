@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  resource :trello_credentials
+
+  devise_for :users
+  root 'trello_boards#index'
+
   get 'board_configuration/new'
 
   get '/activate/:trello_id' => 'board_configuration#new', as: :activate_board
