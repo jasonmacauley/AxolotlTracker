@@ -18,28 +18,31 @@ class TrelloBoardsController < ApplicationController
     @list_average_data = build_list_average_display(averages_by_week)
     @avg_graph = time_in_list_graph_data(@list_average_data)
     @cycle_time = Calculators::CycleTime.new(@board).historical_cycle_time(averages_by_week)
-    puts 'AVG: ' + @avg_graph.to_s
-    puts 'Cycle Time: ' + @cycle_time.to_s
     @avg_graph.push({name: 'cycle_time', data: @cycle_time})
   end
 
   private
 
   def historical_card_data
-    monday = get_monday
+    mondays = get_mondays(20)
     averages_by_week = {}
-    crunch_week_cards(monday, Date.today)
     calculator = Calculators::TimeInList.new(@board)
-    averages_by_week[monday] = calculator.calc_average_time_in_lists_for_period(monday, Date.today)
-    wks = 0
-    while wks < 20
-      c_monday = monday - wks.weeks
-      puts (c_monday - 1.weeks).to_s + ' -> ' + (c_monday - 1.day).to_s
-      crunch_week_cards(c_monday - 1.week, c_monday - 1.day)
-      averages_by_week[c_monday - 1.week] = calculator.calc_average_time_in_lists_for_period(c_monday - 1.week, c_monday - 1.day)
-      wks += 1
+    mondays.each do |monday|
+      crunch_week_cards(monday, monday + 6.days)
+      averages_by_week[monday] = calculator.calc_average_time_in_lists_for_period(monday, monday + 6.days)
     end
     averages_by_week
+  end
+
+  def get_mondays(count)
+    mondays = [get_monday]
+    i = 1
+    while i <= count
+      mondays.push(mondays[i-1] - 1.week)
+      i += 1
+    end
+    puts 'MONDAYS => ' + mondays.to_s
+    return mondays
   end
 
   def time_in_list_graph_data(avg_time_data)
@@ -77,7 +80,6 @@ class TrelloBoardsController < ApplicationController
     averages_by_week.each do |date, averages|
       data[date] = {}
       data['lists'].each do |list|
-        puts 'LIST: ' + list
         data[date][list] = {}
         #binding.pry
         data[date][list]['average'] = averages[list] ? averages[list]['average'] : 0

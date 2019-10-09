@@ -36,6 +36,9 @@ gem 'date'
 gem 'pry-rails'
 gem 'chartkick'
 gem 'devise'
+gem 'jquery-rails'
+gem 'momentjs-rails'
+gem 'bootstrap-datepicker-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

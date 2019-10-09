@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
 
   resource :trello_credentials
+  get '/events/new/:trello_board_id' => 'events#new', as: :new_event
+  post '/events/create/:trello_board_id' => 'events#create', as: :create_event
+  get '/events/index/:trello_board_id' => 'events#index', as: :view_board_events
+  get '/events/show/:trello_board_id/:start_date' => 'events#show', as: :view_events
+  #resource :events
 
   devise_for :users
   root 'trello_boards#index'

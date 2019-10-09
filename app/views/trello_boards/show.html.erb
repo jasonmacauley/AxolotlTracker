@@ -1,6 +1,7 @@
 <%= link_to 'Back to Boards', trello_boards_path %> <br>
 Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@board) %><br>
-<%= link_to('Configure', board_configuration_edit_path(id: @board)) %>
+<%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
+<%= link_to 'Add Event', create_event_path(@board) %>
 <h1><%= @board.name %></h1>
 <%= @trailing_average_period %> Week Trailing Averages:
 <li>
@@ -26,7 +27,12 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
         </tr>
         <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
           <tr>
-            <td align="center"><%= date.to_date %></td>
+            <td align="center" onmouseover="">
+              <%= date.to_date %>
+              <div class="<%= date.to_date %>">
+
+              </div>
+            </td>
             <td align="center"><%= link_to count, cards_path({board_id: @board.id, start_date: date}) %></td>
             <td align="center"><%= points %></td>
             <td align="center"><%= link_to spikes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'spike'}) %></td>

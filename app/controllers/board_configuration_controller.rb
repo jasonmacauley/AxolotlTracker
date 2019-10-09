@@ -6,10 +6,11 @@ class BoardConfigurationController < ApplicationController
     if TrelloBoard.find_by_trello_id(trello_id)
       redirect_to action: :edit, id: TrelloBoard.find_by_trello_id(trello_id)
     end
-    @t_board = Trello::TrelloClient.new.fetch_board(trello_id)
+    @t_board = trello_client.fetch_board(trello_id)
     @board.trello_id = trello_id
     @board.name = @t_board['name']
     @board.save
+    data_loader.import_board_lists(@board)
     redirect_to action: :edit, id: TrelloBoard.find_by_trello_id(trello_id)
   end
 
@@ -17,13 +18,13 @@ class BoardConfigurationController < ApplicationController
   end
 
   def index
-    @boards = Trello::TrelloClient.new.fetch_boards
+    @boards = trello_client.fetch_boards
   end
 
   def edit
     @board = TrelloBoard.find(params[:id])
-    @lists = Trello::TrelloClient.new.fetch_board_lists(@board.trello_id)
-    @labels = Trello::TrelloClient.new.fetch_board_labels(@board.trello_id)
+    @lists = trello_client.fetch_board_lists(@board.trello_id)
+    @labels = trello_client.fetch_board_labels(@board.trello_id)
     tac = BoardConfiguration.config_by_board_type(@board.id, 'trailing_average_period')
     @trailing_average_period = tac.count > 0 ? tac[0].value : 5
   end
@@ -100,5 +101,15 @@ class BoardConfigurationController < ApplicationController
                                                         :cycle_time_lists,
                                                         :trailing_average_period,
                                                         :display_average_lists)
+  end
+
+  def trello_client
+    Trello::TrelloClient.new(current_user.trello_credential.trello_key,
+                             current_user.trello_credential.trello_token)
+  end
+
+  def data_loader
+    Trello::DataLoader.new(current_user.trello_credential.trello_key,
+                             current_user.trello_credential.trello_token)
   end
 end

@@ -1,0 +1,6 @@
+<h1>Events for <%= @board.name %></h1>
+<% @events.each do |event| %>
+  <div>
+    <span><%= event.event_date %></span><span><%= event.description %></span>
+  </div>
+<% end %>

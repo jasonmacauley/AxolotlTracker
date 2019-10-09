@@ -7,7 +7,6 @@ module Trello
       @token = trello_token
     end
 
-
     def fetch_boards
       url = BASE_URL + 'members/me/boards?'
       do_get_request(url)

@@ -1,2 +1,6 @@
-<h1>TrelloCredentials#edit</h1>
+<h1>TrelloCredentials for <%= @user.email %></h1>
 <%= render 'form', trello_credential: @trello_credential %>
+<p>
+  <a href="https://trello.com/app-key">Grab your keys here</a>
+  <%= link_to 'Return to Boards', trello_boards_path %>
+</p>

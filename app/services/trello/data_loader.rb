@@ -9,6 +9,14 @@ module Trello
       handle_lists(board)
     end
 
+    def import_board_lists(board)
+      lists = @trello_client.fetch_board_lists(board.trello_id)
+      lists.each do |list|
+        board.trello_lists.push(TrelloList.create(name: list['name'], trello_id: list['id'])) unless TrelloList.find_by_trello_id(list['id'])
+      end
+      board.save
+    end
+
     private
 
     def handle_lists(board)
@@ -21,14 +29,6 @@ module Trello
         card_last_action(trello_card)
         trello_card.save
       end
-    end
-
-    def import_board_lists(board)
-      lists = @trello_client.fetch_board_lists(board.trello_id)
-      lists.each do |list|
-        board.trello_lists.push(TrelloList.create(name: list['name'], trello_id: list['id'])) unless TrelloList.find_by_trello_id(list['id'])
-      end
-      board.save
     end
 
     def import_actions(trello_card)

@@ -1,4 +1,4 @@
-<h1>SB US Product Team Throughput Stats</h1>
+<h1>Your Configured Trello Boards</h1>
 
 <% @boards.each do |board| %>
   <%= link_to board.name, trello_board_path(board)  %> <br>Last Refresh: <%= board.last_refresh %><br>
