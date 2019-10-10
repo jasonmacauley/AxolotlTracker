@@ -8,8 +8,9 @@ class TrelloBoardsController < ApplicationController
   def show
     @board = TrelloBoard.find(params[:id])
     @cards = @board.trello_cards
+    @mondays = get_mondays(20)
     @lists = calc_average_time_in_lists(@cards)
-
+    @events_by_week = events_by_week
     @cards_by_week = []
     averages_by_week = historical_card_data
     @averages = get_trailing_average(@cards_by_week)
@@ -24,14 +25,21 @@ class TrelloBoardsController < ApplicationController
   private
 
   def historical_card_data
-    mondays = get_mondays(20)
     averages_by_week = {}
     calculator = Calculators::TimeInList.new(@board)
-    mondays.each do |monday|
+    @mondays.each do |monday|
       crunch_week_cards(monday, monday + 6.days)
       averages_by_week[monday] = calculator.calc_average_time_in_lists_for_period(monday, monday + 6.days)
     end
     averages_by_week
+  end
+
+  def events_by_week
+    events = {}
+    @mondays.each do |monday|
+      events[monday] = Event.event_between_by_board(monday, monday + 6.days, @board.id)
+    end
+    return events
   end
 
   def get_mondays(count)

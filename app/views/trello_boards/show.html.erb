@@ -1,7 +1,18 @@
+<script>
+  function showEvents(divId) {
+      var x = document.getElementById(divId);
+      x.classList.toggle("show")
+  }
+  function hideEvents(divId) {
+      var x = document.getElementById(divId);
+      x.classList.toggle("show")
+  }
+</script>
+
 <%= link_to 'Back to Boards', trello_boards_path %> <br>
 Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@board) %><br>
 <%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
-<%= link_to 'Add Event', create_event_path(@board) %>
+<%= link_to 'Add Event', new_event_path(@board) %>
 <h1><%= @board.name %></h1>
 <%= @trailing_average_period %> Week Trailing Averages:
 <li>
@@ -19,7 +30,7 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
     <td>
       <table>
         <tr>
-          <th align="center">Week Of</th>
+          <th align="center">Week Of <span style="font-size: x-small">(Events)</span></th>
           <th align="center">Cards Completed</th>
           <th align="center">Points</th>
           <th align="center">Spikes</th>
@@ -27,11 +38,20 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
         </tr>
         <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
           <tr>
-            <td align="center" onmouseover="">
+            <td align="center">
               <%= date.to_date %>
-              <div class="<%= date.to_date %>">
-
-              </div>
+                <% unless @events_by_week[date.to_date].nil? %>
+                (<i onClick="showEvents('<%= date.to_date %>')"><%= @events_by_week[date.to_date].count %></i>)
+                <div class="popup">
+                  <span class="popuptext" id="<%= date.to_date %>" onClick="hideEvents('<%= date.to_date %>')">
+                    <% @events_by_week[date.to_date].each do |e| %>
+                    <li><%= e.description %>&nbsp;
+                      <%= link_to 'Edit', edit_event_path(e) %> &nbsp
+                      <%= link_to 'Delete', delete_event_path(trello_board_id: e.trello_board_id, id: e.id), method: :delete %></li>
+                  <% end %>
+                  </span>
+                </div>
+                <% end %>
             </td>
             <td align="center"><%= link_to count, cards_path({board_id: @board.id, start_date: date}) %></td>
             <td align="center"><%= points %></td>

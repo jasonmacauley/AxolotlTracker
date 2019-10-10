@@ -23,13 +23,27 @@ class EventsController < ApplicationController
     @event.description = params[:event][:description]
     @event.save
     @board.events.push(@event)
-    redirect_to(view_board_events_path(@board))
+    redirect_to(trello_board_path(@board))
   end
 
   def edit
+    @event = Event.find(params[:id])
   end
 
   def update
+    @event = Event.find(params[:id])
+    @event.event_date = params[:event][:event_date]
+    @event.description = params[:event][:description]
+    @event.save
+    redirect_to(trello_board_path(TrelloBoard.find(@event.trello_board_id)))
+  end
+
+  def destroy
+    redirect_to(trello_board_path(@board)) unless @event = Event.find(params[:id])
+    @event = Event.find(params[:id])
+    @board = TrelloBoard.find(params[:trello_board_id])
+    @event.destroy
+    redirect_to(trello_board_path(@board))
   end
 
   private

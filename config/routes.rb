@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   post '/events/create/:trello_board_id' => 'events#create', as: :create_event
   get '/events/index/:trello_board_id' => 'events#index', as: :view_board_events
   get '/events/show/:trello_board_id/:start_date' => 'events#show', as: :view_events
+  get '/events/edit/:id' => 'events#edit', as: :edit_event
+  post '/events/update/:id' => 'events#update', as: :update_event
+  delete '/events/:trello_board_id/:id' => 'events#destroy', as: :delete_event
   #resource :events
 
   devise_for :users
