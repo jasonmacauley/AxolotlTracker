@@ -1,18 +1,17 @@
 <h1>Edit Event</h1>
-<h1>Edit Event</h1>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.input-group.date').datepicker({autoclose: true,
-            container: '#date-container',
-            format: 'yyyy-mm-dd'});
-    });
-</script>
+
+<%= render 'calendar' %>
 <%= form_for @event, url: update_event_path(@event), method: "post" do |f| %>
 
   <div class="input-group date" data-provide="datepicker">
-    Date:<br>
-    <%= f.text_field :event_date, class: 'form-control' %>
-    <div id="date-container" class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div>
+    <span>Date:<br></span>
+    <%= f.text_field :event_date, class: 'form-control', onClick: 'showCalendar("date-container")' %>
+    <div class="popup">
+      <div id="cal-container" class="cal-container">
+        <div id="date-container"><i class="glyphicon glyphicon-th"></i></div>
+      </div>
+    </div>
+
   </div>
   Description: <br>
   <%= f.text_area :description, :cols => 30, :rows => 10 %> <br>

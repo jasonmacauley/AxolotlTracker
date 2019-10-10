@@ -1,5 +1,15 @@
 <h1>Add Event to <%= @board.name %></h1>
-<%= render 'form', event: @event %>
+<%= render "calendar" %>
+<%= form_for @event, url: create_event_path(@board) do |f| %>
+  <div class="input-group date" data-provide="datepicker">
+    Date:<br>
+    <%= f.text_field :event_date, class: 'form-control' %>
+    <div id="date-container"><i class="glyphicon glyphicon-th"></i></div>
+  </div>
+  Description: <br>
+  <%= f.text_area :description, :cols => 30, :rows => 10 %> <br>
+  <%= f.submit %>
+<% end %>
 <p>
   <%= link_to 'Return to Boards', trello_boards_path %>
 </p>
