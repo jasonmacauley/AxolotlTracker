@@ -32,6 +32,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_card_list_actions(card_id)
+      url = card_url(card_id) + '/actions?filter=updateCard:idList&'
+      do_get_request(url)
+    end
+
     def fetch_board_lists(board_id)
       url = board_url(board_id) + '/lists?'
       do_get_request(url)

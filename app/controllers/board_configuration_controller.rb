@@ -48,6 +48,7 @@ class BoardConfigurationController < ApplicationController
       if config.config_type.match?(config_type)
         config.value = value
         config.save
+        return
       end
     end
     unless BoardConfiguration.config_by_board_type(board.id, config_type).count > 0
@@ -61,19 +62,8 @@ class BoardConfigurationController < ApplicationController
 
   def save_checkbox_config(board, config_type, values)
     current = BoardConfiguration.config_by_board_type(board.id,config_type)
-    c_labels = {}
-    current.each do |c_label|
-      c_labels[c_label.value] = c_label
-    end
-
-    if values
-      values.each do |v|
-        c_labels.delete(v) if c_labels[v]
-      end
-    end
-
-    c_labels.each do |k,v|
-      board.board_configurations.delete(v)
+    current.each do |current_config|
+      current_config.delete
     end
 
     if values
@@ -86,7 +76,6 @@ class BoardConfigurationController < ApplicationController
         end
       end
     end
-
     board.save
   end
 

@@ -40,6 +40,8 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'momentjs-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'thread'
+gem 'sucker_punch'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
