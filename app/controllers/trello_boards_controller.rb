@@ -7,7 +7,9 @@ class TrelloBoardsController < ApplicationController
 
   def show
     @board = TrelloBoard.find(params[:id])
-    @cards = @board.trello_cards
+    @filter = Calculators::LabelFilter.new(@board)
+    @cards = @filter.filter_cards(@board.trello_cards)
+    puts 'Fitlered Cards: ' + @cards.count.to_s
     @mondays = get_mondays(20)
     @lists = calc_average_time_in_lists(@cards)
     @events_by_week = events_by_week
@@ -124,16 +126,17 @@ class TrelloBoardsController < ApplicationController
   end
 
   def crunch_week_cards(begin_date, end_date)
-    w_cards = TrelloCard.last_action_between_by_board(begin_date, end_date, @board.id)
-    spikes = TrelloCard.last_action_between_by_board_and_type(
+
+    w_cards = @filter.filter_cards(TrelloCard.last_action_between_by_board(begin_date, end_date, @board.id))
+    spikes = @filter.filter_cards(TrelloCard.last_action_between_by_board_and_type(
         begin_date,
         end_date,
-        @board.id, 'spike').count
-    airbrakes = TrelloCard.last_action_between_by_board_and_type(
+        @board.id, 'spike')).count
+    airbrakes = @filter.filter_cards(TrelloCard.last_action_between_by_board_and_type(
         begin_date,
         end_date,
         @board.id,
-        'airbrake').count
+        'airbrake')).count
     c_count = 0
     p_count = 0
     w_cards.each do |card|

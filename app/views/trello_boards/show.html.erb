@@ -45,7 +45,7 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
                 <div class="popup">
                   <span class="popuptext" id="<%= date.to_date %>" onClick="hideEvents('<%= date.to_date %>')">
                     <% @events_by_week[date.to_date].each do |e| %>
-                    <li><%= e.description %>&nbsp;
+                    <li><%= e.description %>&nbsp;<br>
                       <%= link_to 'Edit', edit_event_path(e) %> &nbsp
                       <%= link_to 'Delete', delete_event_path(trello_board_id: e.trello_board_id, id: e.id), method: :delete %></li>
                   <% end %>

@@ -12,9 +12,9 @@
 /* The actual popup (appears on top) */
 .popup .popuptext {
   visibility: hidden;
-  background-color: #777;
+  background-color: #a1e9ff;
   width: 350px;
-  color: #fff;
+  color: #000;
   text-align: left;
   border-radius: 6px;
   padding: 8px 0;
@@ -23,6 +23,7 @@
   bottom: 125%;
   left: 50%;
   margin-left: -15px;
+  border-color: #464b55 transparent transparent transparent;
 }
 
 /* Popup arrow */

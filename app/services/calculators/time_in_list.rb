@@ -5,7 +5,8 @@ module Calculators
     end
 
     def calc_average_time_in_lists_for_period(start_date, end_date)
-      cards = TrelloCard.last_action_between_by_board(start_date, end_date, @board.id)
+      filter = Calculators::LabelFilter.new(@board)
+      cards = filter.filter_cards(TrelloCard.last_action_between_by_board(start_date, end_date, @board.id))
       return calc_average_time_in_lists(cards)
     end
 

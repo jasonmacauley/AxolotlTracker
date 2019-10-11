@@ -8,13 +8,26 @@ module Trello
 
     def load_board_data(board)
       import_board_lists(board)
+      import_board_labels(board)
       handle_lists(board)
     end
 
     def import_board_lists(board)
       lists = @trello_client.fetch_board_lists(board.trello_id)
       lists.each do |list|
-        board.trello_lists.push(TrelloList.create(name: list['name'], trello_id: list['id'])) unless TrelloList.find_by_trello_id(list['id'])
+        board.trello_lists.push(
+            TrelloList.create(name: list['name'], trello_id: list['id'])
+        ) unless TrelloList.find_by_trello_id(list['id'])
+      end
+      board.save
+    end
+
+    def import_board_labels(board)
+      labels = @trello_client.fetch_board_labels(board.trello_id)
+      labels.each do |label|
+        board.trello_labels.push(
+            TrelloLabel.create(name: label['name'], trello_id: label['id'])
+        ) unless TrelloLabel.find_by_trello_id(label['id'])
       end
       board.save
     end

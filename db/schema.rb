@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191009184310) do
+ActiveRecord::Schema.define(version: 20191011144815) do
 
   create_table "board_configurations", force: :cascade do |t|
     t.string "config_type"
@@ -61,10 +61,24 @@ ActiveRecord::Schema.define(version: 20191009184310) do
     t.string "trello_link"
   end
 
+  create_table "trello_cards_labels", id: false, force: :cascade do |t|
+    t.integer "trello_card_id", null: false
+    t.integer "trello_label_id", null: false
+    t.index ["trello_card_id", "trello_label_id"], name: "card_label_join", unique: true
+  end
+
   create_table "trello_credentials", force: :cascade do |t|
     t.string "trello_key"
     t.string "trello_token"
     t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trello_labels", force: :cascade do |t|
+    t.integer "trello_board_id"
+    t.string "trello_id"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

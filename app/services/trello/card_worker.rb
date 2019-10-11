@@ -26,11 +26,21 @@ module Trello
             trello_id: card['id'],
             name: card['name'])
       end
+      store_labels(card, trello_card)
       trello_card.trello_link = card['url']
       get_point_value(trello_card)
       get_card_type(trello_card)
 
       trello_card
+    end
+
+    def store_labels(card, trello_card)
+      card['labels'].each do |label|
+        trello_label = TrelloLabel.find_by_trello_id(label['id'])
+        next unless trello_label
+        trello_card.trello_labels.push(trello_label) unless
+            trello_card.trello_labels.select {|l| l.id == trello_label.id}.count > 0
+      end
     end
 
     def import_actions(trello_card)

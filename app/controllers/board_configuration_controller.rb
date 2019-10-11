@@ -25,7 +25,7 @@ class BoardConfigurationController < ApplicationController
     @board = TrelloBoard.find(params[:id])
     @lists = trello_client.fetch_board_lists(@board.trello_id)
     @labels = trello_client.fetch_board_labels(@board.trello_id)
-    tac = BoardConfiguration.config_by_board_type(@board.id, 'trailing_average_period')
+    tac = current_configs(@board, 'trailing_average_period')
     @trailing_average_period = tac.count > 0 ? tac[0].value : 5
   end
 
@@ -51,7 +51,7 @@ class BoardConfigurationController < ApplicationController
         return
       end
     end
-    unless BoardConfiguration.config_by_board_type(board.id, config_type).count > 0
+    unless current_configs(board, config_type).count > 0
       config = BoardConfiguration.new('config_type' => config_type,
                                       'value' => value)
       config.save
@@ -61,22 +61,27 @@ class BoardConfigurationController < ApplicationController
   end
 
   def save_checkbox_config(board, config_type, values)
-    current = BoardConfiguration.config_by_board_type(board.id,config_type)
-    current.each do |current_config|
-      current_config.delete
+    values = [] unless values
+    current_configs(board, config_type).each do |config|
+      next if values.select { |v| config.value.match?(/#{v}/) }.count > 0
+      board.board_configurations.delete(config)
+      config.delete
     end
 
     if values
       values.each do |value|
-        unless BoardConfiguration.config_by_board_type_value(board.id, config_type, value).count > 0
-          config = BoardConfiguration.new('config_type' => config_type,
-                                          'value' => value)
-          config.save
-          board.board_configurations.push(config)
-        end
+        next if current_configs(board, config_type).select { |config| config.value.match?(/#{value}/) }.count > 0
+        config = BoardConfiguration.new('config_type' => config_type,
+                                        'value' => value)
+        config.save
+        board.board_configurations.push(config)
       end
     end
     board.save
+  end
+
+  def current_configs(board, config_type)
+    BoardConfiguration.config_by_board_type(board.id, config_type)
   end
 
   def board_configuration_params

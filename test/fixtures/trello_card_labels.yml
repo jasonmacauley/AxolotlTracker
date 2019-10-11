@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trello_card_id: 1
+  trello_label_id: 1
+
+two:
+  trello_card_id: 1
+  trello_label_id: 1
