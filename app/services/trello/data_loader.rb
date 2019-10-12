@@ -15,10 +15,9 @@ module Trello
     def import_board_lists(board)
       lists = @trello_client.fetch_board_lists(board.trello_id)
       lists.each do |list|
-        board.trello_lists.push(
-            TrelloList.create(name: list['name'], trello_id: list['id'])
-        ) unless TrelloList.find_by_trello_id(list['id'])
+        save_list(board, list)
       end
+      save_list(board, {name: 'new', id: 'none'})
       board.save
     end
 
@@ -33,6 +32,12 @@ module Trello
     end
 
     private
+
+    def save_list(board, list)
+      board.trello_lists.push(
+          TrelloList.create(name: list['name'], trello_id: list['id'])
+      ) unless TrelloList.find_by_trello_id(list['id'])
+    end
 
     def handle_lists(board)
       done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')

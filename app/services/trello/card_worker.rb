@@ -47,6 +47,7 @@ module Trello
       card_actions = @trello_client.fetch_card_list_actions(trello_card.trello_id)
 
       card_actions.each do |action|
+        store_action(trello_card, action)
         store_list_changes(trello_card, action)
       end
 
@@ -65,6 +66,14 @@ module Trello
       trello_card.trello_actions.push(TrelloAction.new(:trello_id => action['id'],
                                                        :action_type => action['type'],
                                                        :datetime => action['date']))
+      if action['type'].match?(/createCard/)
+        action['data']['listBefore'] = { 'id' => 'none',
+                                         'name' => 'created'
+                                        }
+        action['data']['listAfter'] = { 'id' => action['data']['list']['id'],
+                                        'name' => action['data']['list']['name']
+                                      }
+      end
     end
 
     def store_list_changes(trello_card, action)
