@@ -104,6 +104,8 @@ class BoardConfigurationController < ApplicationController
   end
 
   def trello_client
+    return if current_user.trello_credential.nil?
+
     Trello::TrelloClient.new(current_user.trello_credential.trello_key,
                              current_user.trello_credential.trello_token)
   end
