@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4629c637-7079-4f18-931e-1f8c6f749086" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/trello/card_worker.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/card_worker.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/refresh_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/refresh_controller.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/trello/data_loader.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/data_loader.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/trello/trello_client.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/trello_client.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/board_configuration/edit.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/board_configuration/edit.html.erb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,33 +35,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/trello_boards_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="30" lean-forward="true" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/services/calculators/label_filter.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="42" lean-forward="true" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/services/calculators/time_in_list.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="49" lean-forward="true" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/trello_card.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
@@ -75,20 +48,47 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/services/trello/data_loader.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
+            <state relative-caret-position="346">
+              <caret line="29" column="33" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/refresh_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="93" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="18" selection-end-column="93" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/services/trello/card_worker.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="284">
               <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/board_configuration_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/board_configuration/edit.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="41" column="9" lean-forward="true" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -140,7 +140,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/db/migrate/20191009123525_create_trello_credentials.rb" />
         <option value="$PROJECT_DIR$/app/models/user.rb" />
         <option value="$PROJECT_DIR$/app/models/trello_credential.rb" />
         <option value="$PROJECT_DIR$/app/views/trello_credentials/new.html.erb" />
@@ -148,7 +147,6 @@
         <option value="$PROJECT_DIR$/app/views/trello_credentials/create.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/trello_credentials_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/trello_credentials/show.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/refresh_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/trello_credentials/edit.html.erb" />
         <option value="$PROJECT_DIR$/app/views/trello_boards/index.html.erb" />
         <option value="$PROJECT_DIR$/db/migrate/20191009161318_create_events.rb" />
@@ -181,7 +179,6 @@
         <option value="$PROJECT_DIR$/db/migrate/20191011145636_create_trello_card_labels.rb" />
         <option value="$PROJECT_DIR$/config/puma.rb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
-        <option value="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" />
         <option value="$PROJECT_DIR$/app/services/calculators/time_in_list.rb" />
         <option value="$PROJECT_DIR$/app/controllers/trello_boards_controller.rb" />
         <option value="$PROJECT_DIR$/app/services/calculators/label_filter.rb" />
@@ -189,8 +186,11 @@
         <option value="$PROJECT_DIR$/db/migrate/20191012144040_add_trello_card_id_to_liswt_change.rb" />
         <option value="$PROJECT_DIR$/app/services/trello/trello_client.rb" />
         <option value="$PROJECT_DIR$/app/views/cards/show.html.erb" />
-        <option value="$PROJECT_DIR$/app/services/trello/data_loader.rb" />
         <option value="$PROJECT_DIR$/app/services/trello/card_worker.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/refresh_controller.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/board_configuration/edit.html.erb" />
+        <option value="$PROJECT_DIR$/app/services/trello/data_loader.rb" />
       </list>
     </option>
   </component>
@@ -484,15 +484,16 @@
       <workItem from="1570549694660" duration="223000" />
       <workItem from="1570554427134" duration="1152000" />
       <workItem from="1570622887175" duration="26791000" />
-      <workItem from="1570656498179" duration="61304000" />
+      <workItem from="1570656498179" duration="63439000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="273367000" />
+    <option name="totallyTimeSpent" value="275502000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1737" y="53" width="1680" height="1027" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14713065" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -542,13 +543,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/controllers/trello_credentials_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="76" selection-start-line="9" selection-start-column="76" selection-end-line="9" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20191009161318_create_events.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -778,22 +772,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/board_configuration_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/trello_board.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/board_configuration/edit.html.erb">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/trello_boards_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
@@ -861,17 +845,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/services/trello/data_loader.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/services/trello/card_worker.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
           <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/refresh_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="93" lean-forward="true" selection-start-line="17" selection-start-column="4" selection-end-line="18" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/board_configuration_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/board_configuration/edit.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="41" column="9" lean-forward="true" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/services/trello/data_loader.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="29" column="33" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
         </state>
       </provider>
     </entry>

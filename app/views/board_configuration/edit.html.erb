@@ -11,10 +11,10 @@
     <div>
       <b>Define "Done Column"</b><br>
       <% @lists.each do |list| %>
-          <%= w.radio_button :done_list_id, list['id'],
+          <%= w.radio_button :done_list_id, list.trello_id,
                              :checked => BoardConfiguration.config_by_board_type_value(@board.id,
                                                                                        'done_list_id',
-                                                                                       list['id']).count > 0 ? true : false %> <%= list['name'] %> <br>
+                                                                                       list.trello_id).count > 0 ? true : false %> <%= list.name %> <br>
       <% end %>
     </div>
     <div>
@@ -24,8 +24,8 @@
                         { multiple: true,
                           checked: BoardConfiguration.config_by_board_type_value(@board.id,
                                                                                  'display_average_lists',
-                                                                                 list['id']).count > 0 ? true : false
-                        }, list['id'], false %><%= list['name'] %><br>
+                                                                                 list.trello_id).count > 0 ? true : false
+                        }, list.trello_id, false %><%= list.name %><br>
         <% end %>
     </div>
     <div>
@@ -35,8 +35,8 @@
                         { multiple: true,
                           checked: BoardConfiguration.config_by_board_type_value(@board.id,
                                                                                  'cycle_time_lists',
-                                                                                 list['id']).count > 0 ? true : false
-                        }, list['id'], false %><%= list['name'] %><br>
+                                                                                 list.trello_id).count > 0 ? true : false
+                        }, list.trello_id, false %><%= list.name %><br>
       <% end %>
     </div>
     <div>
@@ -46,8 +46,8 @@
                         { multiple: true,
                           checked: BoardConfiguration.config_by_board_type_value(@board.id,
                                                                                  'filtered_labels',
-                                                                                 b_label['id']).count > 0 ? true : false
-                        }, b_label['id'], false %><%= b_label['name'] %><br>
+                                                                                 b_label.trello_id).count > 0 ? true : false
+                        }, b_label.trello_id, false %><%= b_label.name %><br>
       <% end %>
     </div>
     <%= w.submit %>

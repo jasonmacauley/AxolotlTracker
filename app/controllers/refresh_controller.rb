@@ -16,7 +16,7 @@ class RefreshController < ApplicationController
 
   def refresh_board(board)
     Trello::DataLoader.new(current_user.trello_credential.trello_key,
-                           current_user.trello_credential.trello_token).load_board_data(board)
+                           current_user.trello_credential.trello_token).load_stat_data(board)
     board.last_refresh = Time.now
     board.save
   end

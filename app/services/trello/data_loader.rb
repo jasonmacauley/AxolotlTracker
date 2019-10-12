@@ -9,6 +9,9 @@ module Trello
     def load_board_data(board)
       import_board_lists(board)
       import_board_labels(board)
+    end
+
+    def load_stat_data(board)
       handle_lists(board)
     end
 
@@ -17,7 +20,7 @@ module Trello
       lists.each do |list|
         save_list(board, list)
       end
-      save_list(board, {name: 'new', id: 'none'})
+      save_list(board, {'name' => 'new', 'id' => 'none'})
       board.save
     end
 

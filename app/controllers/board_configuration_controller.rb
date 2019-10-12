@@ -10,7 +10,7 @@ class BoardConfigurationController < ApplicationController
     @board.trello_id = trello_id
     @board.name = @t_board['name']
     @board.save
-    data_loader.import_board_lists(@board)
+    update_board_data
     redirect_to action: :edit, id: TrelloBoard.find_by_trello_id(trello_id)
   end
 
@@ -23,8 +23,9 @@ class BoardConfigurationController < ApplicationController
 
   def edit
     @board = TrelloBoard.find(params[:id])
-    @lists = trello_client.fetch_board_lists(@board.trello_id)
-    @labels = trello_client.fetch_board_labels(@board.trello_id)
+    update_board_data
+    @lists = @board.trello_lists
+    @labels = @board.trello_labels
     tac = current_configs(@board, 'trailing_average_period')
     @trailing_average_period = tac.count > 0 ? tac[0].value : 5
   end
@@ -42,6 +43,11 @@ class BoardConfigurationController < ApplicationController
   end
 
   private
+
+  def update_board_data
+    Trello::DataLoader.new(current_user.trello_credential.trello_key,
+                           current_user.trello_credential.trello_token).load_board_data(@board)
+  end
 
   def save_config(board, config_type, value)
     board.board_configurations.each do |config|
