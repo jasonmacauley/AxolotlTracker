@@ -62,22 +62,35 @@ class BurndownController < ApplicationController
     return {} if keys.count == 0
     sorted = keys.sort
     data = {}
+    add_data = {}
+    subtract_data = {}
     days = []
     working_day = sorted[0]
 
     while working_day < Date.tomorrow
       if data[working_day - 1.day].nil?
-        cards['created'][working_day].nil? ?
-            data[working_day] = 0 :
-            data[working_day] = cards['created'][working_day].count
-
+        if cards['created'][working_day].nil?
+          data[working_day] = 0
+          add_data[working_day] = 0
+        else
+          data[working_day] = cards['created'][working_day].count
+          add_data[working_day] = cards['created'][working_day].count
+        end
         data[working_day] -= cards['done'][working_day].count unless cards['done'][working_day].nil?
+        cards['done'][working_day].nil? ? subtract_data[working_day] = 0 : subtract_data[working_day] = cards['done'][working_day].count
       else
-        cards['created'][working_day].nil? ?
-            data[working_day] = data[working_day - 1.day] :
-            data[working_day] = data[working_day - 1.day] + cards['created'][working_day].count
-
+        if cards['created'][working_day].nil?
+          data[working_day] = data[working_day - 1.day]
+          add_data[working_day] = add_data[working_day - 1.day]
+        else
+          data[working_day] = data[working_day - 1.day] + cards['created'][working_day].count
+          add_data[working_day] = add_data[working_day - 1.day] + cards['created'][working_day].count
+        end
         data[working_day] -= cards['done'][working_day].count unless cards['done'][working_day].nil?
+        cards['done'][working_day].nil? ?
+            subtract_data[working_day] = subtract_data[working_day - 1.day] :
+            subtract_data[working_day] = subtract_data[working_day - 1.day] + cards['done'][working_day].count
+
       end
       days.push(working_day)
       break if data[working_day] == 0
@@ -85,12 +98,19 @@ class BurndownController < ApplicationController
     end
 
     last_30 = days.pop(30)
-    trimmed = {}
+    trimmed = {'current' => {},
+               'add' => {},
+               'subtract' => {}
+    }
     last_30.each do |day|
-      trimmed[day] = data[day]
+      trimmed['current'][day] = data[day]
+      trimmed['add'][day] = add_data[day]
+      trimmed['subtract'][day] = subtract_data[day]
     end
 
-    burndown_data = [{name: 'Actual', data: trimmed}]
+    burndown_data = [ { name: 'Current Burn', data: trimmed['current'] },
+                      { name: 'Cards Completed', data: trimmed['subtract'] },
+                      { name: 'Cards Added', data: trimmed['add'] } ]
     puts "Data => " + burndown_data.to_s
     return burndown_data
   end

@@ -1,4 +1,4 @@
 <h1>Burndown Chart <%= @burndown.name %></h1>
 <p><%= link_to('Edit Config', edit_burndown_path(@burndown)) %><%= link_to('Back to board', trello_board_path(@board)) %></p>
-<h2 align="center">Throughput</h2>
+<h2 align="center">Burndown</h2>
 <%= line_chart @chart_data %>
