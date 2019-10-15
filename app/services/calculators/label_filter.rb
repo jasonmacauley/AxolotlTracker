@@ -1,5 +1,6 @@
 module Calculators
   class LabelFilter
+    attr_accessor :only_completed_cards
     def initialize(board)
       filter_config = BoardConfiguration.config_by_board_type(board.id, 'filtered_labels')
       @filter = []
@@ -10,6 +11,7 @@ module Calculators
     end
 
     def is_filtered?(card)
+      return true if only_completed_cards && !card.state.match?(/done/)
       return is_filtered_by_id?(card.id)
     end
 

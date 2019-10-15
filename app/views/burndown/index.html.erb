@@ -1,0 +1,7 @@
+<h1>Burndowns for <%= @board.name %></h1>
+<%= link_to('Create Burndown', new_burndown_path(@board)) %>
+<ul>
+  <% @burndowns.each do |burndown| %>
+    <li><%= link_to(burndown.name, burndown_path(burndown)) %> <%= link_to('Edit', edit_burndown_path(burndown)) %> <%= link_to('Delete', delete_burndown_path(burndown), method: :delete) %></li>
+  <% end %>
+</ul>

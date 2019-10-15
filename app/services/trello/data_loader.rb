@@ -43,9 +43,24 @@ module Trello
     end
 
     def handle_lists(board)
+      completed_lists = []
       done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')
-      list_cards = @trello_client.fetch_list_cards(done_config[0].value)
+      handle_list(board, done_config[0].value, 'done')
+      completed_lists[0] = done_config[0].value
+      burndowns = board.burndowns
+      burndowns.each do |b|
+        b.config_hash['to_do_lists'].each do |list|
+          next if completed_lists.select {|l| l.match?(/#{list}/)}.count > 0
+          handle_list(board, list, 'open')
+          completed_lists.push(list)
+        end
+      end
+    end
+
+    def handle_list(board, list_id, state)
+      list_cards = @trello_client.fetch_list_cards(list_id)
       list_cards.each do |card|
+        card['state'] = state
         CardWorker.new(@key, @token).import_card(card, board)
       end
     end

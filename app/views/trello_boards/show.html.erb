@@ -14,6 +14,13 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
 <%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
 <%= link_to 'Add Event', new_event_path(@board) %>
 <h1><%= @board.name %></h1>
+<div>
+  Burndown Charts:
+  <% @burndowns.each do |burndown| %>
+  <%= link_to(burndown.name, burndown_path(burndown)) %> &nbsp
+  <% end %>
+  <%= link_to('Add New Burndown', new_burndown_path(@board)) %>
+</div>
 <%= @trailing_average_period %> Week Trailing Averages:
 <li>
   Cards: <%= @averages[0] %>

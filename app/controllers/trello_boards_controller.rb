@@ -8,8 +8,8 @@ class TrelloBoardsController < ApplicationController
   def show
     @board = TrelloBoard.find(params[:id])
     @filter = Calculators::LabelFilter.new(@board)
+    @filter.only_completed_cards = true
     @cards = @filter.filter_cards(@board.trello_cards)
-    puts 'Fitlered Cards: ' + @cards.count.to_s
     @mondays = get_mondays(20)
     @lists = calc_average_time_in_lists(@cards)
     @events_by_week = events_by_week
@@ -22,6 +22,7 @@ class TrelloBoardsController < ApplicationController
     @avg_graph = time_in_list_graph_data(@list_average_data)
     @cycle_time = Calculators::CycleTime.new(@board).historical_cycle_time(averages_by_week)
     @avg_graph.push({name: 'cycle_time', data: @cycle_time})
+    @burndowns = @board.burndowns
   end
 
   private
@@ -165,6 +166,7 @@ class TrelloBoardsController < ApplicationController
         { name: 'spikes', data: spikes_s },
         { name: 'airbrakes', data: airbrakes_s }
     ]
+    puts 'Chart Data: ' + chart_data.to_s
     return chart_data
   end
 

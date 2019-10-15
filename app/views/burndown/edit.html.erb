@@ -1,0 +1,32 @@
+<h1>Edit Burndown <%= @burndown.name %>
+  for board <%= @board.name %></h1>
+<%= link_to 'Return To Board', trello_board_path(@board) %>
+<div>
+  <%= form_with(url: update_burndown_path(@burndown), method: "post", model: @burndown) do |w| %>
+    <div>Name: <%= w.text_field :name %></div>
+    <div>Cards Per Week: <%= w.text_field :cards_per_week %></div>
+    <div>
+      <b>Select Backlog and In Progress Columns</b><br>
+      <% @lists.each do |list| %>
+        <%= w.check_box :to_do_lists,
+                        { multiple: true,
+                          checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
+                                                                                'to_do_lists',
+                                                                                list.trello_id).count > 0 ? true : false
+                        }, list.trello_id, false %><%= list.name %><br>
+      <% end %>
+    </div>
+    <div>
+      <b>Select Epic/Milestone Labels</b><br>
+      <% @labels.each do |b_label| %>
+        <%= w.check_box :milestone_labels,
+                        { multiple: true,
+                          checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
+                                                                                'milestone_labels',
+                                                                                b_label.trello_id).count > 0 ? true : false
+                        }, b_label.trello_id, false %><%= b_label.name %><br>
+      <% end %>
+    </div>
+    <%= w.submit %>
+  <% end %>
+</div>

@@ -37,6 +37,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_card_create_action(card_id)
+      url = card_url(card_id) + '/actions?filter=createCard&'
+      do_get_request(url)
+    end
+
     def fetch_board_lists(board_id)
       url = board_url(board_id) + '/lists?'
       do_get_request(url)

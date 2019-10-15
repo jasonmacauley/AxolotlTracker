@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
   def show
-    @cards = get_cards
+    @cards = get_cards.select { |c| c.state.match?(/done/) }
     @board = TrelloBoard.find(params[:board_id])
   end
 

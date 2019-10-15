@@ -45,8 +45,7 @@ class BoardConfigurationController < ApplicationController
   private
 
   def update_board_data
-    Trello::DataLoader.new(current_user.trello_credential.trello_key,
-                           current_user.trello_credential.trello_token).load_board_data(@board)
+    data_loader.load_board_data(@board)
   end
 
   def save_config(board, config_type, value)

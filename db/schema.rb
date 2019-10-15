@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191012142904) do
+ActiveRecord::Schema.define(version: 20191014233007) do
 
   create_table "board_configurations", force: :cascade do |t|
     t.string "config_type"
@@ -19,6 +19,24 @@ ActiveRecord::Schema.define(version: 20191012142904) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["config_type", "value", "trello_board_id"], name: "board_config", unique: true
+  end
+
+  create_table "burndown_configs", force: :cascade do |t|
+    t.string "config_type"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "trello_board_id"
+    t.integer "burndown_id"
+  end
+
+  create_table "burndowns", force: :cascade do |t|
+    t.integer "trello_board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.integer "cards_per_week"
+    t.index ["name", "trello_board_id"], name: "board_burndown"
   end
 
   create_table "events", force: :cascade do |t|
@@ -60,6 +78,8 @@ ActiveRecord::Schema.define(version: 20191012142904) do
     t.integer "trello_board_id"
     t.string "card_type"
     t.string "trello_link"
+    t.date "trello_create_date"
+    t.string "state"
   end
 
   create_table "trello_cards_labels", id: false, force: :cascade do |t|

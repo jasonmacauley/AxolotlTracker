@@ -1,5 +1,18 @@
 Rails.application.routes.draw do
 
+  get 'burndown/index/:board_id' => 'burndown#index', as: :burndowns
+
+  get 'burndown/show/:id' => 'burndown#show', as: :burndown
+
+  post 'burndown/create/:board_id' => 'burndown#create', as: :create_burndown
+
+  get '/burndown/new/:board_id' => 'burndown#new', as: :new_burndown
+
+  post 'burndown/update/:id' => 'burndown#update', as: :update_burndown
+
+  get 'burndown/edit/:id' => 'burndown#edit', as: :edit_burndown
+  delete 'burndown/:id' => 'burndown#destroy', as: :delete_burndown
+
   resource :trello_credentials
   get '/events/new/:trello_board_id' => 'events#new', as: :new_event
   post '/events/create/:trello_board_id' => 'events#create', as: :create_event

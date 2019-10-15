@@ -4,4 +4,5 @@ class TrelloBoard < ApplicationRecord
   has_many :trello_lists
   has_many :events
   has_many :trello_labels
+  has_many :burndowns
 end
