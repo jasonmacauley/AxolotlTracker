@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4629c637-7079-4f18-931e-1f8c6f749086" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/board_configuration_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/cards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/cards_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/trello_boards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/trello_boards_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/trello_board.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/trello_board.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/calculators/label_filter.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/calculators/label_filter.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/calculators/time_in_list.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/calculators/time_in_list.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/trello/card_worker.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/card_worker.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/trello/data_loader.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/data_loader.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/trello/trello_client.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/trello/trello_client.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/trello_boards/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/trello_boards/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/burndown_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/burndown_controller.rb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/burndown_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+            <state relative-caret-position="395">
+              <caret line="109" column="99" selection-start-line="109" selection-start-column="99" selection-end-line="109" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -70,7 +58,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/trello_boards/show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
@@ -196,10 +184,10 @@
         <option value="$PROJECT_DIR$/app/views/burndown/new.html.erb" />
         <option value="$PROJECT_DIR$/app/views/burndown/edit.html.erb" />
         <option value="$PROJECT_DIR$/app/views/burndown/show.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/burndown_controller.rb" />
         <option value="$PROJECT_DIR$/app/services/calculators/time_in_list.rb" />
         <option value="$PROJECT_DIR$/app/controllers/trello_boards_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/trello_boards/show.html.erb" />
+        <option value="$PROJECT_DIR$/app/controllers/burndown_controller.rb" />
       </list>
     </option>
   </component>
@@ -500,12 +488,12 @@
       <workItem from="1570549694660" duration="223000" />
       <workItem from="1570554427134" duration="1152000" />
       <workItem from="1570622887175" duration="26791000" />
-      <workItem from="1570656498179" duration="101090000" />
+      <workItem from="1570656498179" duration="102167000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="313153000" />
+    <option name="totallyTimeSpent" value="314230000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1737" y="53" width="1680" height="1027" extended-state="0" />
@@ -844,13 +832,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/burndown_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/services/calculators/time_in_list.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -869,6 +850,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="74" lean-forward="true" selection-start-line="13" selection-start-column="74" selection-end-line="13" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/burndown_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="109" column="99" selection-start-line="109" selection-start-column="99" selection-end-line="109" selection-end-column="99" />
         </state>
       </provider>
     </entry>

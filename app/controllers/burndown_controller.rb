@@ -57,7 +57,9 @@ class BurndownController < ApplicationController
   
   def build_burndown_data(configs)
     cards = get_matching_cards_by_date(configs)
+    #binding.pry
     keys = cards['created'].keys
+    return {} if keys.count == 0
     sorted = keys.sort
     data = {}
     days = []
@@ -78,6 +80,7 @@ class BurndownController < ApplicationController
         data[working_day] -= cards['done'][working_day].count unless cards['done'][working_day].nil?
       end
       days.push(working_day)
+      break if data[working_day] == 0
       working_day = working_day + 1.day
     end
 
@@ -105,6 +108,7 @@ class BurndownController < ApplicationController
         cards_by_date['done'][card.last_action_datetime.to_date].nil? ?
             cards_by_date['done'][card.last_action_datetime.to_date] = [card] :
             cards_by_date['done'][card.last_action_datetime.to_date].push(card) if card.state.match?('done')
+        card.trello_create_date = card.last_action_datetime.to_date if card.trello_create_date.nil?
         cards_by_date['created'][card.trello_create_date].nil? ?
             cards_by_date['created'][card.trello_create_date] = [card] :
             cards_by_date['created'][card.trello_create_date].push(card)
