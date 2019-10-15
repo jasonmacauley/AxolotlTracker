@@ -18,7 +18,7 @@ class BurndownController < ApplicationController
 
     save_checkbox_config(@burndown, 'to_do_lists', params[:burndown][:to_do_lists])
     save_checkbox_config(@burndown, 'milestone_labels', params[:burndown][:milestone_labels])
-    redirect_to burndowns_path(@board)
+    redirect_to refresh_path(@board)
   end
 
   def new
@@ -36,7 +36,7 @@ class BurndownController < ApplicationController
     save_checkbox_config(@burndown, 'to_do_lists', params[:burndown][:to_do_lists])
     save_checkbox_config(@burndown, 'milestone_labels', params[:burndown][:milestone_labels])
     @burndown.save
-    redirect_to burndowns_path(@board)
+    redirect_to refresh_path(@board)
   end
 
   def edit
@@ -111,7 +111,6 @@ class BurndownController < ApplicationController
     burndown_data = [ { name: 'Current Burn', data: trimmed['current'] },
                       { name: 'Cards Completed', data: trimmed['subtract'] },
                       { name: 'Cards Added', data: trimmed['add'] } ]
-    puts "Data => " + burndown_data.to_s
     return burndown_data
   end
 
@@ -125,9 +124,12 @@ class BurndownController < ApplicationController
       cards = t_label.trello_cards
       cards.each do |card|
         cards_by_date['count'] += 1
-        cards_by_date['done'][card.last_action_datetime.to_date].nil? ?
+        if card.state.match?('done')
+          cards_by_date['done'][card.last_action_datetime.to_date].nil? ?
             cards_by_date['done'][card.last_action_datetime.to_date] = [card] :
-            cards_by_date['done'][card.last_action_datetime.to_date].push(card) if card.state.match?('done')
+            cards_by_date['done'][card.last_action_datetime.to_date].push(card)
+        end
+        next if card.trello_create_date.nil? && card.last_action_datetime.nil?
         card.trello_create_date = card.last_action_datetime.to_date if card.trello_create_date.nil?
         cards_by_date['created'][card.trello_create_date].nil? ?
             cards_by_date['created'][card.trello_create_date] = [card] :
