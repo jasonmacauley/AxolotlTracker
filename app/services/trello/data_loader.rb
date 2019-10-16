@@ -12,7 +12,7 @@ module Trello
     end
 
     def load_stat_data(board)
-      handle_lists(board)
+      load_all_board_stat_data(board)
     end
 
     def import_board_lists(board)
@@ -36,25 +36,36 @@ module Trello
 
     private
 
+    def load_all_board_stat_data(board)
+      lists = [done_list(board)]
+      burndowns = board.burndowns
+      burndowns.each do |b|
+        b.config_hash['to_do_lists'].each do |list|
+          lists.push(list)
+        end
+      end
+      handle_lists(board, lists)
+    end
+
     def save_list(board, list)
       board.trello_lists.push(
           TrelloList.create(name: list['name'], trello_id: list['id'])
       ) unless TrelloList.find_by_trello_id(list['id'])
     end
 
-    def handle_lists(board)
+    def handle_lists(board, lists)
       completed_lists = []
-      done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')
-      handle_list(board, done_config[0].value, 'done')
-      completed_lists[0] = done_config[0].value
-      burndowns = board.burndowns
-      burndowns.each do |b|
-        b.config_hash['to_do_lists'].each do |list|
-          next if completed_lists.select {|l| l.match?(/#{list}/)}.count > 0
-          handle_list(board, list, 'open')
-          completed_lists.push(list)
-        end
+      lists.each do |list|
+        next if completed_lists.select {|l| l.match?(/#{list}/)}.count > 0
+        list.match?(/#{done_list(board)}/) ? state = 'dpne' : state = 'open'
+        handle_list(board, list, state)
+        completed_lists.push(list)
       end
+    end
+
+    def done_list(board)
+      done_config = BoardConfiguration.config_by_board_type(board.id, 'done_list_id')
+      done_config[0].value
     end
 
     def handle_list(board, list_id, state)
