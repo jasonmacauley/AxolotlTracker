@@ -17,7 +17,7 @@
 //= require Chart.bundle
 //= require moment
 //= require bootstrap-datepicker
-//= require_tree .
 //= require jquery
-//= require popper.js/dist/umd/popper
-//= require bootstrap/dist/js/bootstrap
+//= require popper.js
+//= require bootstrap
+//= require_tree .

@@ -37,7 +37,7 @@ module Trello
     private
 
     def load_all_board_stat_data(board)
-      lists = [done_list(board)]
+      lists = [ done_list(board) ]
       burndowns = board.burndowns
       burndowns.each do |b|
         b.config_hash['to_do_lists'].each do |list|
@@ -57,7 +57,7 @@ module Trello
       completed_lists = []
       lists.each do |list|
         next if completed_lists.select {|l| l.match?(/#{list}/)}.count > 0
-        list.match?(/#{done_list(board)}/) ? state = 'dpne' : state = 'open'
+        list.match?(/#{done_list(board)}/) ? state = 'done' : state = 'open'
         handle_list(board, list, state)
         completed_lists.push(list)
       end

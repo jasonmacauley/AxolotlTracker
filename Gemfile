@@ -42,6 +42,8 @@ gem 'momentjs-rails'
 gem 'bootstrap-datepicker-rails'
 gem 'thread'
 gem 'sucker_punch'
+gem 'popper_js'
+gem 'bootstrap', git: 'https://github.com/twbs/bootstrap-rubygem'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
