@@ -20,9 +20,11 @@ class TrelloBoardsController < ApplicationController
     @trailing_average_period = trailing_average_period
     @list_average_data = build_list_average_display(averages_by_week)
     @avg_graph = time_in_list_graph_data(@list_average_data)
-    @cycle_time = Calculators::CycleTime.new(@board).historical_cycle_time(averages_by_week)
+    ct_calc = Calculators::CycleTime.new(@board)
+    @cycle_time = ct_calc.historical_cycle_time(averages_by_week)
     @avg_graph.push({name: 'cycle_time', data: @cycle_time})
     @burndowns = @board.burndowns
+    @cycle_time_lists = ct_calc.lists
   end
 
   private
