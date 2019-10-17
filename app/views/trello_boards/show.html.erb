@@ -39,7 +39,7 @@
     Cards By Week
   </div>
   <div class="col">
-    Average Days In Lists
+    Average Days In Lists <span class="small-text">(* = Included in cycle time)</span>
   </div>
 </div>
 <div class="row">
@@ -63,7 +63,7 @@
   </div>
   <% @list_average_data['lists'].each do |list| %>
     <div class="col">
-      <%= list %>
+      <%= list %> <%= '*' if @cycle_time_lists.select { |l| l.match?(/#{list}/) }.count > 0 %>
     </div>
   <% end %>
 </div>
