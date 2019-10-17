@@ -3,53 +3,81 @@
 <h1><%= @board.name %></h1>
 <div>
   <%= form_with(url: board_configuration_update_url(id: @board.id), method: "post") do |w| %>
-    <div>
-      <b>Trailing Average Period</b>
-      <%= select_tag(:trailing_average_period,
+    <div class="row">
+      <div>
+        <b>Trailing Average Period</b>
+        <%= select_tag(:trailing_average_period,
                        options_for_select([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], @trailing_average_period)) %>
+      </div>
     </div>
-    <div>
-      <b>Define "Done Column"</b><br>
-      <% @lists.each do |list| %>
+    <div class="row">
+      <div class="col">
+        <b>Define "Done Column"</b><br>
+        <% @lists.each do |list| %>
           <%= w.radio_button :done_list_id, list.trello_id,
                              :checked => BoardConfiguration.config_by_board_type_value(@board.id,
                                                                                        'done_list_id',
                                                                                        list.trello_id).count > 0 ? true : false %> <%= list.name %> <br>
-      <% end %>
-    </div>
-    <div>
-      <b>Select Columns to Display Weekly Averages</b><br>
-      <% @lists.each do |list| %>
-        <%= w.check_box :display_average_lists,
-                        { multiple: true,
-                          checked: BoardConfiguration.config_by_board_type_value(@board.id,
-                                                                                 'display_average_lists',
-                                                                                 list.trello_id).count > 0 ? true : false
-                        }, list.trello_id, false %><%= list.name %><br>
         <% end %>
+      </div>
+      <div class="col">
+        <b>Select Columns to Display Weekly Averages</b><br>
+        <% @lists.each do |list| %>
+          <%= w.check_box :display_average_lists,
+                          { multiple: true,
+                            checked: BoardConfiguration.config_by_board_type_value(@board.id,
+                                                                                   'display_average_lists',
+                                                                                   list.trello_id).count > 0 ? true : false
+                          }, list.trello_id, false %><%= list.name %><br>
+        <% end %>
+      </div>
+      <div class="cols">
+        <b>Cycle Time Lists</b><br>
+        <% @lists.each do |list| %>
+          <%= w.check_box :cycle_time_lists,
+                          { multiple: true,
+                            checked: BoardConfiguration.config_by_board_type_value(@board.id,
+                                                                                   'cycle_time_lists',
+                                                                                   list.trello_id).count > 0 ? true : false
+                          }, list.trello_id, false %><%= list.name %><br>
+        <% end %>
+      </div>
     </div>
-    <div>
-      <b>Cycle Time Lists</b><br>
-      <% @lists.each do |list| %>
-        <%= w.check_box :cycle_time_lists,
-                        { multiple: true,
-                          checked: BoardConfiguration.config_by_board_type_value(@board.id,
-                                                                                 'cycle_time_lists',
-                                                                                 list.trello_id).count > 0 ? true : false
-                        }, list.trello_id, false %><%= list.name %><br>
-      <% end %>
+    <div class="row filter-config">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <b>Filterd Labels</b>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+          <% i=0 %>
+          <% @labels.each do |b_label| %>
+              <% if i >= 5 %>
+                </div>
+                <div class="col">
+                  <% i = 0 %>
+              <% end %>
+            <div class="col filter-label">
+              <%= w.check_box :filtered_labels,
+                              { multiple: true,
+                                checked: BoardConfiguration.config_by_board_type_value(@board.id,
+                                                                                       'filtered_labels',
+                                                                                       b_label.trello_id).count > 0 ? true : false
+                              }, b_label.trello_id, false %><%= b_label.name %>
+            <% i += 1 %>
+            </div>
+          <% end %>
+
+          </div>
+        </div>
+
+
+      </div>
     </div>
-    <div>
-      <b>Filterd Labels</b><br>
-      <% @labels.each do |b_label| %>
-        <%= w.check_box :filtered_labels,
-                        { multiple: true,
-                          checked: BoardConfiguration.config_by_board_type_value(@board.id,
-                                                                                 'filtered_labels',
-                                                                                 b_label.trello_id).count > 0 ? true : false
-                        }, b_label.trello_id, false %><%= b_label.name %><br>
-      <% end %>
+    <div class="row">
+      <%= w.submit %>
+    <% end %>
     </div>
-    <%= w.submit %>
-  <% end %>
 </div>
