@@ -75,6 +75,18 @@ body {
     padding-top: 48px; /* Space for fixed navbar */
   }
 }
+.table-header {
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.table-row {
+  align-content: center;
+}
+
+.data-cell {
+  text-align: center;
+}
 
 /*
  * Navbar

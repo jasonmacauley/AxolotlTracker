@@ -8,13 +8,19 @@
       x.classList.toggle("show")
   }
 </script>
-
-<%= link_to 'Back to Boards', trello_boards_path %> <br>
-Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@board) %><br>
-<%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
-<%= link_to 'Add Event', new_event_path(@board) %>
-<h1><%= @board.name %></h1>
-<div>
+<div class="row">
+  Last Refresh: <%= @board.last_refresh %> &nbsp <%= link_to 'Refresh', refresh_path(@board) %><br>
+</div>
+<div class="row">
+  <%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
+</div>
+<div class="row">
+  <h1><%= @board.name %></h1>
+</div>
+<div class="row">
+  <%= link_to 'Add Event', new_event_path(@board) %>
+</div>
+<div class="row">
   Burndown Charts:
   <% @burndowns.each do |burndown| %>
   <%= link_to(burndown.name, burndown_path(burndown)) %> &nbsp
@@ -28,73 +34,80 @@ Last Refresh: <%= @board.last_refresh %> <%= link_to 'Refresh', refresh_path(@bo
 <li>
   Points: <%= @averages[1] %>
 </li>
-<table>
-  <tr>
-    <th>Cards By Week</th>
-    <th>Average Days In Lists</th>
-  </tr>
-  <tr>
-    <td>
-      <table>
-        <tr>
-          <th align="center">Week Of <span style="font-size: x-small">(Events)</span></th>
-          <th align="center">Cards Completed</th>
-          <th align="center">Points</th>
-          <th align="center">Spikes</th>
-          <th align="center">Airbrakes</th>
-        </tr>
-        <% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
-          <tr>
-            <td align="center">
-              <%= date.to_date %>
-                <% unless @events_by_week[date.to_date].nil? %>
-                (<i onClick="showEvents('<%= date.to_date %>')"><%= @events_by_week[date.to_date].count %></i>)
-                <div class="popup">
-                  <span class="popuptext" id="<%= date.to_date %>" onClick="hideEvents('<%= date.to_date %>')">
-                    <% @events_by_week[date.to_date].each do |e| %>
-                    <li><%= e.description %>&nbsp;<br>
-                      <%= link_to 'Edit', edit_event_path(e) %> &nbsp
-                      <%= link_to 'Delete', delete_event_path(trello_board_id: e.trello_board_id, id: e.id), method: :delete %></li>
-                  <% end %>
-                  </span>
-                </div>
-                <% end %>
-            </td>
-            <td align="center"><%= link_to count, cards_path({board_id: @board.id, start_date: date}) %></td>
-            <td align="center"><%= points %></td>
-            <td align="center"><%= link_to spikes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'spike'}) %></td>
-            <td align="center"><%= link_to airbrakes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'airbrake'}) %></td>
-          </tr>
-        <% end %>
-      </table>
-    </td>
-    <td valign="top">
-      <table>
-        <tr>
-          <th>Cycle Time</th>
-          <% @list_average_data['lists'].each do |list| %>
-            <th><%= list %></th>
-          <% end %>
-        </tr>
-        <% @list_average_data.each do |date, data| %>
-        <tr>
-          <td><%= @cycle_time[date] %></td>
-          <% @list_average_data['lists'].each do |list| %>
-            <% next if date.to_s.match?(/lists/) %>
-            <td align="center">
-              <%= @list_average_data[date][list]['average'] %>
-            </td>
-          <% end %>
-        </tr>
-        <% end %>
+<div class="row table-header">
+  <div class="col">
+    Cards By Week
+  </div>
+  <div class="col">
+    Average Days In Lists
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    Week Of <span style="font-size: x-small">(Events)</span>
+  </div>
+  <div class="col">
+    Cards Completed
+  </div>
+  <div class="col">
+    Points
+  </div>
+  <div class="col">
+    Spikes
+  </div>
+  <div class="col">
+    Airbrakes
+  </div>
+  <div class="col">
+    Cycle Time
+  </div>
+  <% @list_average_data['lists'].each do |list| %>
+    <div class="col">
+      <%= list %>
+    </div>
+  <% end %>
+</div>
+<% @cards_by_week.each do |date,count,points,spikes,airbrakes| %>
+  <div class="row">
+    <div class="col-md-auto">
+      <%= date.to_date %>
+      <% unless @events_by_week[date.to_date].nil? %>
+        (<i onClick="showEvents('<%= date.to_date %>')"><%= @events_by_week[date.to_date].count %></i>)
+        <div class="popup">
+          <span class="popuptext" id="<%= date.to_date %>" onClick="hideEvents('<%= date.to_date %>')">
+            <% @events_by_week[date.to_date].each do |e| %>
+              <li><%= e.description %>&nbsp;<br>
+                <%= link_to 'Edit', edit_event_path(e) %> &nbsp
+                <%= link_to 'Delete', delete_event_path(trello_board_id: e.trello_board_id, id: e.id), method: :delete %>
+              </li>
+            <% end %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+    <div class="col data-cell"><%= link_to count, cards_path({board_id: @board.id, start_date: date}) %></div>
+    <div class="col data-cell"><%= points %></div>
+    <div class="col data-cell"><%= link_to spikes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'spike'}) %></div>
+    <div class="col data-cell"><%= link_to airbrakes, cards_by_type_path({board_id: @board.id, start_date: date, card_type: 'airbrake'}) %></div>
+    <div class="col data-cell"><%= @cycle_time[date] %></div>
+    <% @list_average_data['lists'].each do |list| %>
+      <% next if date.to_s.match?(/lists/) %>
+      <div class="col data-cell">
+        <%= @list_average_data[date][list]['average'] %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<div class="row align-items-end"></div>
 
-      </table>
-    </td>
-  </tr>
-</table>
-<h2 align="center">Throughput</h2>
-<%= line_chart @chart_data['throughput'] %>
-<h2 align="center">Time In List</h2>
-<%= line_chart @avg_graph %>
+<div class="row">
+  <h2 align="center">Throughput</h2>
+  <%= line_chart @chart_data['throughput'] %>
+</div>
+<div class="row">
+  <h2 align="center">Time In List</h2>
+  <%= line_chart @avg_graph %>
+</div>
+
 
 
