@@ -3,7 +3,7 @@
   <h3><a href="<%= card.trello_link %>"><%= card.name %></a></h3>
   Points <%= card.points %> - Last Action: <%= card.last_action_datetime %>
   <br><br>
-  <% card.trello_list_changes.each do |change| %>
-    <li><%= change.datetime %> - Time In <%= change.list_after_name %> : <%= (change.time_in_list / 3600).round(2) unless change.time_in_list.nil? %> Hours</li>
+  <% card.list_changes.each do |change| %>
+    <li><%= change.datetime %> - Time In <%= change.list_after_name %> : <%= change.hours_in_list.round(2) unless change.hours_in_list.nil? %> Hours</li>
   <% end %>
 <% end %>

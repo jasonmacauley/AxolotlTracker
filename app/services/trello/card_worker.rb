@@ -51,8 +51,6 @@ module Trello
         store_action(trello_card, action)
         store_list_changes(trello_card, action)
       end
-
-      calc_card_time_in_list(trello_card)
     end
 
     def card_last_action(trello_card)
@@ -92,17 +90,6 @@ module Trello
                                :list_after_name => action['data']['listAfter']['name'],
                                :trello_action_ref_id => action['id'])
       )
-    end
-
-    def calc_card_time_in_list(trello_card)
-      i = 0
-      until trello_card.trello_list_changes[i + 1].nil?
-        time_in_list = trello_card.trello_list_changes[i].datetime - trello_card.trello_list_changes[i + 1].datetime
-        trello_card.trello_list_changes[i + 1].time_in_list = time_in_list
-        trello_card.trello_list_changes[i + 1].save
-        i += 1
-      end
-      trello_card.save
     end
 
     def get_point_value(trello_card)

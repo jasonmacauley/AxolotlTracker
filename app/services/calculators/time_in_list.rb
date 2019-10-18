@@ -14,7 +14,7 @@ module Calculators
     def calc_average_time_in_lists(cards)
       lists = {}
       cards.each do |card|
-        card.trello_list_changes.each do |change|
+        card.list_changes.each do |change|
           handle_nil(change, lists)
           lists[change.list_after_name]['count'] += 1
 

@@ -2,9 +2,12 @@
 <%= render "calendar" %>
 <%= form_for @event, url: create_event_path(@board) do |f| %>
   <div class="input-group date" data-provide="datepicker">
-    Date:<br>
-    <%= f.text_field :event_date, class: 'form-control' %>
-    <div id="date-container"><i class="glyphicon glyphicon-th"></i></div>
+    <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd" data-date-autoclose=true>
+      Date: <%= f.text_field :event_date, class: "span2", size: "16", readonly: true %>
+      <span class="add-on">
+      <i class="icon-th"></i>
+    </span>
+    </div>
   </div>
   Description: <br>
   <%= f.text_area :description, :cols => 30, :rows => 10 %> <br>

@@ -2,16 +2,13 @@
 
 <%= render 'calendar' %>
 <%= form_for @event, url: update_event_path(@event), method: "post" do |f| %>
-
   <div class="input-group date" data-provide="datepicker">
-    <span>Date:<br></span>
-    <%= f.text_field :event_date, class: 'form-control', onClick: 'showCalendar("date-container")' %>
-    <div class="popup">
-      <div id="cal-container" class="cal-container">
-        <div id="date-container"><i class="glyphicon glyphicon-th"></i></div>
-      </div>
+    <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd" data-date-autoclose=true>
+      Date: <%= f.text_field :event_date, class: "span2", size: "16", readonly: true %>
+      <span class="add-on">
+      <i class="icon-th"></i>
+    </span>
     </div>
-
   </div>
   Description: <br>
   <%= f.text_area :description, :cols => 30, :rows => 10 %> <br>

@@ -1,4 +1,11 @@
 <div class="input-group date" data-provide="datepicker">
+  <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd">
+    <input class="span2" size="16" type="text" readonly>
+    <span class="add-on">
+      <i class="icon-th"></i>
+    </span>
+  </div>
+
    Date:<br>
    <%= f.text_field :event_date, class: 'form-control' %>
    <div id="date-container"><i class="glyphicon glyphicon-th"></i></div>

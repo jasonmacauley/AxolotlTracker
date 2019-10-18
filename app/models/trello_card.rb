@@ -12,4 +12,25 @@ class TrelloCard < ApplicationRecord
   scope :last_action_between_by_board_and_type, lambda {|start_date, end_date, board_id, type|
     where('last_action_datetime >= ? AND last_action_datetime <= ? AND trello_board_id = ? AND card_type = ?',
           start_date, end_date, board_id, type)}
+
+  def list_changes
+    return @list_changes unless @list_changes.nil?
+    @list_changes = []
+    return @list_changes unless self.trello_list_changes
+    changes_by_date = {}
+    self.trello_list_changes.each do |change|
+      changes_by_date[change.datetime] = change
+    end
+    dates = changes_by_date.keys.sort
+    puts 'Dates => ' + dates.to_s
+
+    previous_date = self.trello_create_date.nil? ? dates[0] : self.trello_create_date
+    dates.each do |date|
+      puts "Date " + date.to_s + ' - ' + previous_date.to_s
+      changes_by_date[date].time_in_list = date.to_time - previous_date.to_time
+      previous_date = date
+      @list_changes.push(changes_by_date[date])
+    end
+    return @list_changes
+  end
 end
