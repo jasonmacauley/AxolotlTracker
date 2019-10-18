@@ -27,7 +27,7 @@ class BoardConfigurationController < ApplicationController
     @lists = @board.trello_lists
     @labels = @board.trello_labels
     tac = current_configs(@board, 'trailing_average_period')
-    @trailing_average_period = tac.count > 0 ? tac[0].value : 5
+    @trailing_average_period = tac.nil? ? tac : 5
   end
 
   def update
@@ -68,14 +68,14 @@ class BoardConfigurationController < ApplicationController
   def save_checkbox_config(board, config_type, values)
     values = [] unless values
     current_configs(board, config_type).each do |config|
-      next if values.select { |v| config.value.match?(/#{v}/) }.count > 0
+      next if values.select { |v| config.match?(/#{v}/) }.count > 0
       board.board_configurations.delete(config)
       config.delete
     end
 
     if values
       values.each do |value|
-        next if current_configs(board, config_type).select { |config| config.value.match?(/#{value}/) }.count > 0
+        next if current_configs(board, config_type).select { |config| config.match?(/#{value}/) }.count > 0
         config = BoardConfiguration.new('config_type' => config_type,
                                         'value' => value)
         config.save
@@ -86,7 +86,7 @@ class BoardConfigurationController < ApplicationController
   end
 
   def current_configs(board, config_type)
-    BoardConfiguration.config_by_board_type(board.id, config_type)
+    return board.config_hash[config_type].nil? ? [] : board.config_hash[config_type]
   end
 
   def board_configuration_params
@@ -102,15 +102,18 @@ class BoardConfigurationController < ApplicationController
                                                         :display_average_lists)
   end
 
+=begin
   def trello_client
     return if current_user.trello_credential.nil?
 
     Trello::TrelloClient.new(current_user.trello_credential.trello_key,
                              current_user.trello_credential.trello_token)
   end
+=end
 
   def data_loader
     Trello::DataLoader.new(current_user.trello_credential.trello_key,
                              current_user.trello_credential.trello_token)
   end
+
 end

@@ -52,9 +52,10 @@
         </div>
         <div class="row">
           <div class="col">
+            <% max = @labels.count/5 %>
           <% i=0 %>
           <% @labels.each do |b_label| %>
-              <% if i >= 5 %>
+              <% if i >= max %>
                 </div>
                 <div class="col">
                   <% i = 0 %>
