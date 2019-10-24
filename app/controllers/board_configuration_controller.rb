@@ -27,7 +27,7 @@ class BoardConfigurationController < ApplicationController
     @lists = @board.trello_lists
     @labels = @board.trello_labels
     tac = current_configs(@board, 'trailing_average_period')
-    @trailing_average_period = tac.nil? ? tac : 5
+    @trailing_average_period = tac.nil? ? 5 : tac
   end
 
   def update
@@ -101,15 +101,6 @@ class BoardConfigurationController < ApplicationController
                                                         :trailing_average_period,
                                                         :display_average_lists)
   end
-
-=begin
-  def trello_client
-    return if current_user.trello_credential.nil?
-
-    Trello::TrelloClient.new(current_user.trello_credential.trello_key,
-                             current_user.trello_credential.trello_token)
-  end
-=end
 
   def data_loader
     Trello::DataLoader.new(current_user.trello_credential.trello_key,

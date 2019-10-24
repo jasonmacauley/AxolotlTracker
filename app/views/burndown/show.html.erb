@@ -1,8 +1,20 @@
-<div>
-  <h1>Burndown Chart <%= @burndown.name %></h1>
-  <p><%= link_to('Edit Config', edit_burndown_path(@burndown)) %> <%= link_to('Back to board', trello_board_path(@board)) %> <%= link_to('Refresh Board', refresh_path(@board)) %></p>
-  <div class="content">
-    <h2 align="center">Burndown</h2>
-    <%= line_chart @chart_data %>
+<div class="row">
+  <div class="col">
+  <h1>Burndown Charts <%= @burndown.name %></h1>
+    <p>
+      <span class="col"><%= link_to('Edit Config', edit_burndown_path(@burndown)) %></span>
+      <span class="col"><%= link_to('Delete Burndown', delete_burndown_path(@burndown), method: :delete) %></span>
+      <span class="col"><%= link_to('Back to board', trello_board_path(@board)) %></span>
+      <span class="col"><%= link_to('Refresh Board', refresh_path(@board)) %></span>
+    </p>
   </div>
 </div>
+  <div class="content row">
+    <h2 align="center">Cards</h2>
+    <%= line_chart @chart_data['cards'] %>
+  </div>
+  <div class="content row">
+    <h2 align="center">Points</h2>
+    <%= line_chart @chart_data['points'] %>
+  </div>
+

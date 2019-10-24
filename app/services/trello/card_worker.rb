@@ -54,8 +54,8 @@ module Trello
     end
 
     def card_last_action(trello_card)
-      return if trello_card.trello_list_changes[0].nil?
-      trello_card.last_action_datetime = trello_card.trello_list_changes[0].datetime
+      return if trello_card.list_changes.last.nil?
+      trello_card.last_action_datetime = trello_card.list_changes.last.datetime
       trello_card.save
     end
 
@@ -93,7 +93,7 @@ module Trello
     end
 
     def get_point_value(trello_card)
-      capture = trello_card.name.match(/^\((\d+)\)/)
+      capture = trello_card.name.match(/^\((|\<\d+)\)|\>/)
 
       unless capture.nil?
         trello_card.points = capture[1]

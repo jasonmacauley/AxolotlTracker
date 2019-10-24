@@ -23,6 +23,7 @@ class BurndownController < ApplicationController
 
   def new
     @board = TrelloBoard.find(params[:board_id])
+    dataloader.load_board_data(@board)
     @burndown = Burndown.new
     @lists = @board.trello_lists
     @labels = @board.trello_labels
@@ -42,6 +43,7 @@ class BurndownController < ApplicationController
   def edit
     @burndown = Burndown.find(params[:id])
     @board = TrelloBoard.find(@burndown.trello_board_id)
+    dataloader.load_board_data(@board)
     @lists = @board.trello_lists
     @labels = @board.trello_labels
   end
@@ -75,9 +77,15 @@ class BurndownController < ApplicationController
     burndown.save
   end
 
-  def trello_client
-    Trello::TrelloClient.new(current_user.trello_credential.trello_key,
-                             current_user.trello_credential.trello_token)
+  #def trello_client
+  #  Trello::TrelloClient.new(current_user.trello_credential.trello_key,
+  #                           current_user.trello_credential.trello_token)
+  #end
+  #
+
+  def dataloader
+    Trello::DataLoader.new(current_user.trello_credential.trello_key,
+                            current_user.trello_credential.trello_token)
   end
 
   def current_configs(burndown, config_type)
