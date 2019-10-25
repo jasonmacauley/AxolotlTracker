@@ -9,12 +9,16 @@
     </p>
   </div>
 </div>
-  <div class="content row">
-    <h2 align="center">Cards</h2>
-    <%= line_chart @chart_data['cards'] %>
+<div class="content row table-header">
+  <div class="col">
+  <h2 align="center">Cards</h2>
+  <%= line_chart @chart_data['cards'] %>
   </div>
-  <div class="content row">
-    <h2 align="center">Points</h2>
-    <%= line_chart @chart_data['points'] %>
+</div>
+<div class="content row table-header">
+  <div class="col">
+  <h2 align="center">Points</h2>
+  <%= line_chart @chart_data['points'] %>
   </div>
+</div>
 

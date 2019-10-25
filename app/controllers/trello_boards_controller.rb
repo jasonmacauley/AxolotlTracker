@@ -17,7 +17,7 @@ class TrelloBoardsController < ApplicationController
     averages_by_week = historical_card_data
     @averages = get_trailing_average(@cards_by_week)
     @chart_data = build_throughput_chart_data(@cards_by_week)
-    @trailing_average_period = trailing_average_period
+    @trailing_average_period = trailing_average_period(@board)
     @list_average_data = build_list_average_display(averages_by_week)
     @avg_graph = time_in_list_graph_data(@list_average_data)
     ct_calc = Calculators::CycleTime.new(@board)
@@ -54,7 +54,6 @@ class TrelloBoardsController < ApplicationController
       mondays.push(mondays[i-1] - 1.week)
       i += 1
     end
-    puts 'MONDAYS => ' + mondays.to_s
     return mondays
   end
 
@@ -103,21 +102,13 @@ class TrelloBoardsController < ApplicationController
   end
 
   def get_trailing_average(cards_by_week)
-    period = trailing_average_period
-    i = 1
-    cards = 0
-    points = 0
-    while i < period + 1
-      cards += cards_by_week[i][1]
-      points += cards_by_week[i][2]
-      i += 1
-    end
-    [cards / period, points / period]
+    Calculators::StatCalculator.new.trailing_average(cards_by_week, @board)
   end
 
-  def trailing_average_period
-    configs = BoardConfiguration.config_by_board_type(@board.id, 'trailing_average_period')
-    configs.count > 0 ? configs[0].value.to_i : 5
+
+  def trailing_average_period(board)
+    configs = board.config_hash['trailing_average_period']
+    configs.count > 0 ? configs[0].to_i : 5
   end
 
   def get_monday
@@ -129,7 +120,6 @@ class TrelloBoardsController < ApplicationController
   end
 
   def crunch_week_cards(begin_date, end_date)
-
     w_cards = @filter.filter_cards(TrelloCard.last_action_between_by_board(begin_date, end_date, @board.id))
     spikes = @filter.filter_cards(TrelloCard.last_action_between_by_board_and_type(
         begin_date,
@@ -161,14 +151,16 @@ class TrelloBoardsController < ApplicationController
       spikes_s[date] = spikes
       airbrakes_s[date] = airbrakes
     end
+    trailing_average_trend = Calculators::StatCalculator.new.trailing_average_trend(@cards_by_week, @board)
     chart_data = {}
     chart_data['throughput'] = [
         { name: 'cards', data: cards_s },
         { name: 'points', data: points_s },
         { name: 'spikes', data: spikes_s },
-        { name: 'airbrakes', data: airbrakes_s }
+        { name: 'airbrakes', data: airbrakes_s },
+        { name: 'points trend', data: trailing_average_trend['points'] },
+        { name: 'card trend', data: trailing_average_trend['cards'] }
     ]
-    puts 'Chart Data: ' + chart_data.to_s
     return chart_data
   end
 

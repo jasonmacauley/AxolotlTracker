@@ -1,33 +1,74 @@
-<h1>New Burndown for <%= @board.name %></h1>
-<%= link_to 'Return To Board', trello_board_path(@board) %>
-
-<h1><%= @board.name %></h1>
-<div>
-  <%= form_with(url: create_burndown_path(board_id: @board.id), method: "post", model: @burndown) do |w| %>
-    <div>Name: <%= w.text_field :name %></div>
-    <div>Cards Per Week: <%= w.text_field :cards_per_week %></div>
-    <div>
-      <b>Select Backlog and In Progress Columns</b><br>
-      <% @lists.each do |list| %>
-        <%= w.check_box :to_do_lists,
-                        { multiple: true,
-                          checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
-                                                                            'to_do_lists',
-                                                                            list.trello_id).count > 0 ? true : false
-                        }, list.trello_id, false %><%= list.name %><br>
-      <% end %>
-    </div>
-    <div>
-      <b>Select Epic/Milestone Labels</b><br>
-      <% @labels.each do |b_label| %>
-        <%= w.check_box :milestone_labels,
-                        { multiple: true,
-                          checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
-                                                                             'milestone_labels',
-                                                                             b_label.trello_id).count > 0 ? true : false
-                        }, b_label.trello_id, false %><%= b_label.name %><br>
-      <% end %>
-    </div>
-    <%= w.submit %>
-  <% end %>
+<div class="row">
+  <h1>Edit Burndown <%= @burndown.name %>
+    for board <%= @board.name %></h1>
 </div>
+<%= link_to 'Return To Board', trello_board_path(@board) %>
+<div class="row">
+  <div class="col">
+    <%= form_with(url: create_burndown_path(board_id: @board.id), method: "post", model: @burndown) do |w| %>
+      <div class="row">
+        <div class="col-md-auto">Name: <%= w.text_field :name %></div>
+        <div class="col-md-auto">Cards Per Week: <%= w.text_field :cards_per_week %></div>
+      </div>
+      <div class="row table-header">
+        <div class="col">
+          <b>Select Backlog and In Progress Columns</b>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <% max = @lists.count/4 %>
+          <% i=0 %>
+          <% @lists.each do |list| %>
+            <% if i >= max %>
+              </div>
+              <div class="col">
+                <% i = 0 %>
+            <% end %>
+            <%= w.check_box :to_do_lists,
+                            { multiple: true,
+                              checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
+                                                                                    'to_do_lists',
+                                                                                    list.trello_id).count > 0 ? true : false
+                            }, list.trello_id, false %><%= list.name %><br>
+            <% i += 1 %>
+          <% end %>
+          </div>
+          </div>
+      <div class="row filter-config">
+        <div class="col">
+          <div class="row table-header">
+            <div class="col">
+              <b>Select Epic/Milestone Labels</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <% max = @labels.count/5 %>
+              <% i=0 %>
+              <% @labels.each do |b_label| %>
+                <% if i >= max %>
+                  </div>
+                  <div class="col">
+                    <% i = 0 %>
+                <% end %>
+                <div class="col filter-label">
+                  <%= w.check_box :milestone_labels,
+                                  { multiple: true,
+                                    checked: BurndownConfig.config_by_burndown_type_value(@burndown.id,
+                                                                                          'milestone_labels',
+                                                                                          b_label.trello_id).count > 0 ? true : false
+                                  }, b_label.trello_id, false %><%= b_label.name %>
+                  <% i += 1 %>
+                </div>
+              <% end %>
+
+              </div>
+              </div>
+          <div class="row">
+            <div class="col"> <%= w.submit %> </div>
+          </div>
+    <% end %>
+    </div>
+    </div>
+

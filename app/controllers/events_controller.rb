@@ -17,12 +17,12 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new
-    puts 'Params ' + params[:event][:event_date]
     @board = TrelloBoard.find(params[:trello_board_id])
     @event.event_date = params[:event][:event_date]
     @event.description = params[:event][:description]
     @event.save
     @board.events.push(@event)
+    @board.save
     redirect_to(trello_board_path(@board))
   end
 

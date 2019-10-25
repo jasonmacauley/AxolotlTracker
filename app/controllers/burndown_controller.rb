@@ -37,7 +37,7 @@ class BurndownController < ApplicationController
     save_checkbox_config(@burndown, 'to_do_lists', params[:burndown][:to_do_lists])
     save_checkbox_config(@burndown, 'milestone_labels', params[:burndown][:milestone_labels])
     @burndown.save
-    redirect_to refresh_path(@board)
+    redirect_to(burndown_path(@burndown))
   end
 
   def edit

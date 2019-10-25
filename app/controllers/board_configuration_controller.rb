@@ -69,8 +69,9 @@ class BoardConfigurationController < ApplicationController
     values = [] unless values
     current_configs(board, config_type).each do |config|
       next if values.select { |v| config.match?(/#{v}/) }.count > 0
-      board.board_configurations.delete(config)
-      config.delete
+      bc = BoardConfiguration.config_by_board_type_value(board.id, config_type, config)[0]
+      board.board_configurations.delete(bc)
+      bc.delete
     end
 
     if values
@@ -105,6 +106,11 @@ class BoardConfigurationController < ApplicationController
   def data_loader
     Trello::DataLoader.new(current_user.trello_credential.trello_key,
                              current_user.trello_credential.trello_token)
+  end
+
+  def trello_client
+    Trello::TrelloClient.new(current_user.trello_credential.trello_key,
+                           current_user.trello_credential.trello_token)
   end
 
 end

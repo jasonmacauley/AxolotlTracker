@@ -9,34 +9,46 @@
   }
 </script>
 <div class="row">
-  Last Refresh: <%= @board.last_refresh %> &nbsp <%= link_to 'Refresh', refresh_path(@board) %><br>
-</div>
-<div class="row">
-  <%= link_to('Configure', board_configuration_edit_path(id: @board)) %><br>
-</div>
-<div class="row">
   <h1><%= @board.name %></h1>
 </div>
 <div class="row">
-  <%= link_to 'Add Event', new_event_path(@board) %>
+  <div class="col-md-auto">
+    Last Refresh: <%= @board.last_refresh %> &nbsp <%= link_to 'Refresh', refresh_path(@board) %>
+  </div>
+  <div class="col">
+    <%= link_to('Configure', board_configuration_edit_path(id: @board)) %>
+  </div>
 </div>
 <div class="row">
-  Burndown Charts:
-  <% @burndowns.each do |burndown| %>
-  <%= link_to(burndown.name, burndown_path(burndown)) %> &nbsp
-  <% end %>
-  <%= link_to('Add New Burndown', new_burndown_path(@board)) %>
+  <div class="col table-header">
+    <%= @trailing_average_period %> Week Trailing Averages:
+  </div>
 </div>
-<%= @trailing_average_period %> Week Trailing Averages:
-<li>
-  Cards: <%= @averages[0] %>
-</li>
-<li>
-  Points: <%= @averages[1] %>
-</li>
+<div class="row">
+  <div class="col">
+    Cards: <%= @averages[0] %>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    Points: <%= @averages[1] %>
+  </div>
+</div>
 <div class="row table-header">
-  <div class="col-md-7">
-    Cards By Week
+  <div class="col">
+    Burndown Charts: (<%= link_to('Add New', new_burndown_path(@board)) %>)
+  </div>
+</div>
+<div class="row">
+  <% @burndowns.each do |burndown| %>
+  <div class="col-md-auto">
+    <%= link_to(burndown.name, burndown_path(burndown)) %>
+  </div>
+  <% end %>
+</div>
+<div class="row table-header">
+  <div class="col-md-5">
+    Cards By Week (<%= link_to 'Add Event', new_event_path(@board) %>)
   </div>
   <div class="col">
     Average Days In Lists <span class="small-text">(* = Included in cycle time)</span>
@@ -100,13 +112,17 @@
 <% end %>
 <div class="row align-items-end"></div>
 
-<div class="row">
-  <h2 align="center">Throughput</h2>
-  <%= line_chart @chart_data['throughput'] %>
+<div class="row table-header">
+  <div class="col">
+    <h2 align="center">Throughput</h2>
+    <%= line_chart @chart_data['throughput'] %>
+  </div>
 </div>
-<div class="row">
-  <h2 align="center">Time In List</h2>
-  <%= line_chart @avg_graph %>
+<div class="row table-header">
+  <div class="col">
+    <h2 align="center">Time In List</h2>
+    <%= line_chart @avg_graph %>
+  </div>
 </div>
 
 

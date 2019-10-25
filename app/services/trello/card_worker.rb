@@ -27,11 +27,13 @@ module Trello
             name: card['name'])
       end
       store_labels(card, trello_card)
+      trello_card.name = card['name']
       trello_card.trello_link = card['url']
       trello_card.state = card['state']
       get_point_value(trello_card)
       get_card_type(trello_card)
 
+      trello_card.save
       trello_card
     end
 
@@ -93,7 +95,7 @@ module Trello
     end
 
     def get_point_value(trello_card)
-      capture = trello_card.name.match(/^\((|\<\d+)\)|\>/)
+      capture =  trello_card.name.match(/^</) ? trello_card.name.match(/^<(\d+)/) : trello_card.name.match(/^\((\d+)\)/)
 
       unless capture.nil?
         trello_card.points = capture[1]
@@ -108,7 +110,6 @@ module Trello
       else
         trello_card.card_type = 'product'
       end
-      trello_card.save
     end
 
   end

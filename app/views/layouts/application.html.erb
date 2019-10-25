@@ -33,6 +33,20 @@
           <li class="nav-item">
             <%= link_to 'Home', root_path, class: "nav-link" %>
           </li>
+              <% TrelloBoard.all.each do |board| %>
+              <li class="nav-item">
+                <%= link_to board.name, trello_board_path(board), class: "nav-link"  %>
+              </li>
+              <% end %>
+              <li class="nav-item">
+                <%= link_to('Add Boards', board_configuration_index_path, class: "nav-link") %>
+              </li>
+              <li class="nav-item">
+                <%= link_to('Refresh Data For All Boards', refresh_all_path, class: "nav-link") %>
+              </li>
+              <li class="nav-item">
+                <%= link_to('Update Trello Credentials', edit_trello_credentials_path, class: "nav-link") %>
+              </li>
         </ul>
       </div>
     </nav>

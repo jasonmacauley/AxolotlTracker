@@ -1,12 +1,12 @@
 <h1>Add Event to <%= @board.name %></h1>
 <%= render "calendar" %>
 <%= form_for @event, url: create_event_path(@board) do |f| %>
-  <div class="input-group date" data-provide="datepicker">
-    <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd" data-date-autoclose=true>
-      Date: <%= f.text_field :event_date, class: "span2", size: "16", readonly: true %>
-      <span class="add-on">
-      <i class="icon-th"></i>
-    </span>
+  <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-autoclose=true>
+    <div class="input-append date" id="dp3">
+      Date: <%= f.text_field :event_date, class: "form-control span2", size: "16", readonly: true %>
+      <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+      </div>
     </div>
   </div>
   Description: <br>
