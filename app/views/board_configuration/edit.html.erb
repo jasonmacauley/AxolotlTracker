@@ -47,6 +47,33 @@
       <div class="col">
         <div class="row">
           <div class="col">
+            <b>Define "Blocked Label"</b>
+          </div>
+          <div class="row">
+            <div class="col">
+              <% max = @labels.count/5 %>
+              <% i=0 %>
+              <% @labels.each do |b_label| %>
+                <% if i >= max %>
+                  </div>
+                  <div class="col">
+                    <% i = 0 %>
+                <% end %>
+                <div class="col filter-label">
+                  <%= w.radio_button :blocked_label_id, b_label.trello_id,
+                                     :checked => BoardConfiguration.config_by_board_type_value(@board.id,
+                                                                                               'blocked_label_id',
+                                                                                               b_label.trello_id).count > 0 ? true : false %> <%= b_label.name %>
+                  <% i += 1 %>
+                </div>
+              <% end %>
+              </div>
+      </div>
+    </div>
+    <div class="row filter-config">
+      <div class="col">
+        <div class="row">
+          <div class="col">
             <b>Filterd Labels</b>
           </div>
         </div>

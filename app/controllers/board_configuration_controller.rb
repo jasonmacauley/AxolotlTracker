@@ -9,6 +9,7 @@ class BoardConfigurationController < ApplicationController
     @t_board = trello_client.fetch_board(trello_id)
     @board.trello_id = trello_id
     @board.name = @t_board['name']
+    @board.url = @t_board['url']
     @board.save
     update_board_data
     redirect_to action: :edit, id: TrelloBoard.find_by_trello_id(trello_id)
@@ -35,6 +36,7 @@ class BoardConfigurationController < ApplicationController
     save_config(@board, 'done_list_id', params[:done_list_id])
     save_config(@board, 'review_list_id', params[:review_list_id])
     save_config(@board, 'trailing_average_period', params[:trailing_average_period])
+    save_config(@board, 'blocked_label_id', params[:blocked_label_id])
     save_checkbox_config(@board, 'cycle_time_lists', params[:cycle_time_lists])
     save_checkbox_config(@board, 'display_average_lists', params[:display_average_lists])
     save_checkbox_config(@board, "filtered_labels", params[:filtered_labels])

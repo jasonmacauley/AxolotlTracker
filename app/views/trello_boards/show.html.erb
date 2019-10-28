@@ -21,6 +21,11 @@
 </div>
 <div class="row">
   <div class="col table-header">
+    <a href="<%=@board.url + '?menu=filter&filter=label:Blocked' %>"><%= @blocked_count %></a> Cards Currently Blocked
+  </div>
+</div>
+<div class="row">
+  <div class="col table-header">
     <%= @trailing_average_period %> Week Trailing Averages:
   </div>
 </div>

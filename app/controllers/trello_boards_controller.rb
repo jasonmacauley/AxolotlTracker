@@ -25,9 +25,17 @@ class TrelloBoardsController < ApplicationController
     @avg_graph.push({name: 'cycle_time', data: @cycle_time})
     @burndowns = @board.burndowns
     @cycle_time_lists = ct_calc.lists
+    @blocked_count = blocked_cards
   end
 
   private
+
+  def blocked_cards
+    blocked_label = @board.config_hash['blocked_label_id']
+    return 0 if blocked_label.nil?
+    label = TrelloLabel.find_by(trello_id: blocked_label)
+    return label.trello_cards.count
+  end
 
   def historical_card_data
     averages_by_week = {}

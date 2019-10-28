@@ -7,6 +7,7 @@ module Trello
     end
 
     def load_board_data(board)
+      board.url = @trello_client.fetch_board(board.trello_id)['url']
       import_board_lists(board)
       import_board_labels(board)
     end
