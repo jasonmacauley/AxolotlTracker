@@ -13,13 +13,12 @@ module Trello
     def handle_card(board, card)
       trello_card = store_card(card)
       board.trello_cards.push(trello_card)
-      import_actions(trello_card)
-      card_last_action(trello_card)
       trello_card.save
     end
 
     def store_card(card)
       trello_card = TrelloCard.find_by(trello_id: card['id'])
+      return trello_card if !trello_card.nil? && trello_card.updated_at > card['dateLastActivity']
 
       if trello_card.nil?
         trello_card = TrelloCard.create(
@@ -32,6 +31,8 @@ module Trello
       trello_card.state = card['state']
       get_point_value(trello_card)
       get_card_type(trello_card)
+      import_actions(trello_card)
+      card_last_action(trello_card)
 
       trello_card.save
       trello_card

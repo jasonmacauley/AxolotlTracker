@@ -29,7 +29,7 @@ module Calculators
     def trailing_average_trend(cards_by_week, board)
       period = trailing_average_period(board)
       trend = { 'cards' => {}, 'points' => {} }
-      i = 0
+      i = 1
       while cards_by_week.count > i + period
         average = calc_trailing_average(cards_by_week.slice(i, period))
         trend['cards'][cards_by_week[i][0]] = average[0]

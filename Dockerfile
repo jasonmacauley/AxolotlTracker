@@ -31,6 +31,7 @@ ENV GEM_HOME=$APP_HOME/.bundle
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 ENV BUNDLE_JOBS=4
+ENV DEVISE_SECRET_KEY='ea0c9a9bce14df1cdab8850a6c59ba2811a5cc4a97a7d39b275e674f9d016d5ed5d8757f06b795444d0f1f23b7b3f98fa1a0abed04fe8b3fa904ef79efe02636'
 
 # Do the bundle install
 COPY Gemfile $APP_HOME/
@@ -46,4 +47,4 @@ RUN bundle install --no-cache --deployment --without development \
 EXPOSE 3000
 
 # Run the app
-CMD ./run.sh & /bin/bash
+CMD ./run.sh

@@ -22,11 +22,9 @@ class TrelloCard < ApplicationRecord
       changes_by_date[change.datetime] = change
     end
     dates = changes_by_date.keys.sort
-    puts 'Dates => ' + dates.to_s
 
     previous_date = self.trello_create_date.nil? ? dates[0] : self.trello_create_date
     dates.each do |date|
-      puts "Date " + date.to_s + ' - ' + previous_date.to_s
       changes_by_date[date].time_in_list = date.to_time - previous_date.to_time
       previous_date = date
       @list_changes.push(changes_by_date[date])
