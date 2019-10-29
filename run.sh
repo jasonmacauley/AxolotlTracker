@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "running run.sh"
+echo "Starting Trello Tracker..."
 # exit on error
 set -e
 
@@ -30,6 +30,10 @@ _term() {
   wait "$PUMA_PID"
 }
 trap _term SIGTERM
+
+echo "TrelloTracker Dumping ENV..."
+env
+echo "TrelloTracker Starting rails..."
 
 bundle exec rails s -b 0.0.0.0 -p 3000 &
 PUMA_PID=$!
