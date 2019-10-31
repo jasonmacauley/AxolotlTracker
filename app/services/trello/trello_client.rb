@@ -17,6 +17,11 @@ module Trello
       do_get_request(url)
     end
 
+    def fetch_board_archived_cards(board_id)
+      url = board_url(board_id) + '/cards?filter=done:true&'
+      do_get_request(url)
+    end
+
     def fetch_board_actions(board_id)
       url = board_url(board_id) + '/actions?limit=1000&'
       do_get_request(url)
@@ -48,7 +53,7 @@ module Trello
     end
 
     def fetch_list_cards(list_id)
-      url = list_url(list_id) + '/cards?'
+      url = list_url(list_id) + '/cards?filter=all&'
       do_get_request(url)
     end
 

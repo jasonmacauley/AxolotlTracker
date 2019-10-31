@@ -28,6 +28,19 @@ pipeline {
       }
     }
 
+    stage('Terraform') {
+          when {
+            anyOf {
+              branch 'master'
+              expression { return params.TERRAFORM }
+              expression { return params.RUN_ALL }
+            }
+          }
+          steps {
+            sh "bnw_runner ./_pipeline/stage_custom_s3.sh"
+          }
+        }
+
     stage('Build') {
       when {
         anyOf {
